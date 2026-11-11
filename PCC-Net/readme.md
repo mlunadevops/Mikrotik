@@ -35,11 +35,13 @@ set [ find default-name=ether5 ] name=ether5-LAN
 
 Es indispensable permitir la traducción de direcciones de red (NAT) en cada una de las interfaces WAN independientes de modo que el tráfico pueda salir de la red local sin interrupciones.
 
+```mikrotik
 /ip firewall nat
 add chain=srcnat out-interface=ether1-WAN1-CANTV action=masquerade comment="NAT CANTV 600M"
 add chain=srcnat out-interface=ether3-WAN3-STARLINK action=masquerade comment="NAT Starlink 200M"
 add chain=srcnat out-interface=ether2-WAN2-GALANET action=masquerade comment="NAT Galanet 50M"
 add chain=srcnat out-interface=ether4-WAN4-CANTV2 action=masquerade comment="NAT CANTV Nueva"
+```
 
 ## 4. Enrutamiento Recursivo con Control de Distancias
 
