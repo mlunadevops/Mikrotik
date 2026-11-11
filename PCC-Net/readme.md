@@ -78,3 +78,18 @@ En RouterOS, el comportamiento ante una pérdida o degradación severa de ancho 
 ### Script de Control por Umbral de Saturación en WAN1
 
 Este script mide los bits por segundo en la interfaz WAN1 (`ether1-WAN1-CANTV`). Si la degradación es continua o sobrepasa cierto límite predeterminado, el sistema puede alertar o cambiar temporalmente el tráfico a la interfaz secundaria (Starlink).
+
+```mikrotik
+/system script
+add name="Check_WAN1_Threshold" source={
+    :local interfaceName "ether1-WAN1-CANTV";
+    :local thresholdBits 550000000; # Umbral crítico (ejemplo: 550 Mbps)
+    
+    /interface monitor-traffic $interfaceName once do={
+        :local currentRx $"rx-bits-per-second";
+        :if ($currentRx > $thresholdBits) do={
+            :log warning "ALERTA: WAN1 CANTV ha alcanzado el umbral limite de capacidad ($currentRx bps).";
+        }
+    }
+}
+```
