@@ -43,6 +43,8 @@ El primer paso dentro de RouterOS consiste en asignar un nombre identificable a 
 
 Para renombrar las interfaces directamente desde la terminal de MikroTik (RouterOS), ejecuta los siguientes comandos:
 
+![BGP WEIGTH](images/terminal.png)
+
 ```routeros
 /interface ethernet
 set [ find default-name=ether1 ] name=ether1-WAN1-CANTV
