@@ -93,3 +93,12 @@ add name="Check_WAN1_Threshold" source={
     }
 }
 ```
+
+## 6. Automatización de Ejecución (Scheduler)
+
+Para ejecutar este chequeo periódicamente (cada 30 segundos, por ejemplo):
+
+```mikrotik
+/system scheduler
+add name="Run_WAN1_Check" interval=30s on-event="Check_WAN1_Threshold" comment="Ejecutar monitor de umbral de ancho de banda"
+```
