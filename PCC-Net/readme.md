@@ -53,11 +53,10 @@ set [ find default-name=ether5 ] name=ether5-LAN
 
 Es indispensable permitir la traducción de direcciones de red (NAT) en cada una de las interfaces WAN independientes de modo que el tráfico pueda salir de la red local sin interrupciones.
 
-## Configuración de Direcciones IP en Puertos WAN
 
 Cada puerto WAN debe tener configurada la dirección IP que te entregó tu proveedor o recibirla por DHCP (en el caso de Starlink o módems en modo router).
 
-**3.1)** Configuración Manual en WinBox
+**3.1)** Configuración Manual en WinBox (Configuración de Direcciones IP en Puertos WAN)
 
 1. Ve a **IP** > **Addresses**.
 2. Haz clic en el botón azul **+** (Add).
