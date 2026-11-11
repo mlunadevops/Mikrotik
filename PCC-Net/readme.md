@@ -45,8 +45,6 @@ add chain=srcnat out-interface=ether4-WAN4-CANTV2 action=masquerade comment="NAT
 
 ## 4. Enrutamiento Recursivo con Control de Distancias
 
-## 4. Enrutamiento Recursivo con Control de Distancias
-
 Para garantizar el salto jerárquico según el ancho de banda contratado, implementamos Rutas Recursivas con comprobación activa (`check-gateway=ping`).
 
 Las rutas hacia servidores DNS públicos sirven como objetivo de monitoreo continuo para verificar conectividad real a internet (no solo enlace físico contra el módem o router de la operadora).
