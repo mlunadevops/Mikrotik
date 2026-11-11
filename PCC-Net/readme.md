@@ -53,6 +53,22 @@ set [ find default-name=ether5 ] name=ether5-LAN
 
 Es indispensable permitir la traducción de direcciones de red (NAT) en cada una de las interfaces WAN independientes de modo que el tráfico pueda salir de la red local sin interrupciones.
 
+## Configuración de Direcciones IP en Puertos WAN
+
+Cada puerto WAN debe tener configurada la dirección IP que te entregó tu proveedor o recibirla por DHCP (en el caso de Starlink o módems en modo router).
+
+**3.1)** Configuración Manual en WinBox
+
+1. Ve a **IP** > **Addresses**.
+2. Haz clic en el botón azul **+** (Add).
+3. En **Address**, introduce la IP de tu proveedor con su máscara (ej. `192.168.1.100/24`).
+4. En **Interface**, selecciona la interfaz correspondiente (ej. `ether1-WAN1-CANTV`).
+5. Haz clic en **Apply** y **OK**. Repite para cada WAN.
+
+> **Nota para DHCP:** Si alguno es por DHCP Client, ve a **IP** > **DHCP Client** y créalo seleccionando la interfaz respectiva.
+
+* **Verificación:** Verás todas las IPs activas listadas en la pestaña de direcciones con sus respectivas interfaces asociadas.
+
 ```mikrotik
 /ip firewall nat
 add chain=srcnat out-interface=ether1-WAN1-CANTV action=masquerade comment="NAT CANTV 600M"
