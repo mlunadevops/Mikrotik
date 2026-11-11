@@ -22,6 +22,20 @@ Esta guía documenta la implementación de un esquema de **failover y balanceo d
 
 El primer paso dentro de RouterOS consiste en asignar un nombre identificable a cada interfaz física para evitar confusión durante la lectura del conjunto de reglas.
 
+**2.1.** Renombrar Interfaces en WinBox
+
+1. Ve al menú lateral izquierdo y haz clic en **Interfaces**.
+2. En la pestaña **Interface**, haz doble clic sobre `ether1`.
+3. En el campo **Name**, escribe `ether1-WAN1-CANTV` y haz clic en **OK**.
+4. Repite el proceso para el resto de puertos según tu tabla:
+   - `ether2` $\rightarrow$ `ether2-WAN2-GALANET`
+   - `ether3` $\rightarrow$ `ether3-WAN3-STARLINK`
+   - `ether4` $\rightarrow$ `ether4-WAN4-CANTV2`
+   - `ether5` $\rightarrow$ `ether5-LAN`
+
+
+
+
 ```routeros
 /interface ethernet
 set [ find default-name=ether1 ] name=ether1-WAN1-CANTV
