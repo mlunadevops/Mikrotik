@@ -52,17 +52,24 @@ Las rutas hacia servidores DNS públicos sirven como objetivo de monitoreo conti
 > **Nota:** Reemplazar `[GW_WAN1]`, `[GW_WAN2]`, `[GW_WAN3]` y `[GW_WAN4]` por la dirección IP de la puerta de enlace enviada por tu proveedor (o asignada por DHCP).
 
 /ip route
+
 # 1. Host de monitoreo dedicado para cada WAN
+
+```mikrotik
 add dst-address=1.1.1.1 gateway=[GW_WAN1] scope=10 comment="Ping Host WAN1"
 add dst-address=8.8.8.8 gateway=[GW_WAN3] scope=10 comment="Ping Host WAN3"
 add dst-address=9.9.9.9 gateway=[GW_WAN2] scope=10 comment="Ping Host WAN2"
 add dst-address=208.67.222.222 gateway=[GW_WAN4] scope=10 comment="Ping Host WAN4"
+```
 
 # 2. Rutas por defecto ordenadas jerárquicamente por capacidad
+
+```mikrotik
 add dst-address=0.0.0.0/0 gateway=1.1.1.1 target-scope=30 distance=1 check-gateway=ping comment="Ruta Principal WAN1 600M"
 add dst-address=0.0.0.0/0 gateway=8.8.8.8 target-scope=30 distance=2 check-gateway=ping comment="Ruta Secundaria WAN3 200M"
 add dst-address=0.0.0.0/0 gateway=9.9.9.9 target-scope=30 distance=3 check-gateway=ping comment="Ruta Terciaria WAN2 50M"
 add dst-address=0.0.0.0/0 gateway=208.67.222.222 target-scope=30 distance=4 check-gateway=ping comment="Ruta Cuaternaria WAN4"
+```mikrotik
 
 ## 5. Control de Umbrales mediante Scripting y Netwatch
 
