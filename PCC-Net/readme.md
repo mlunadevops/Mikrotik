@@ -34,7 +34,7 @@ El primer paso dentro de RouterOS consiste en asignar un nombre identificable a 
    - `ether5` $\rightarrow$ `ether5-LAN`
 
 
-
+![BGP WEIGTH](images/01Interfaces.png)
 
 ```routeros
 /interface ethernet
