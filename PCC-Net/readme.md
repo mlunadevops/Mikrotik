@@ -68,6 +68,9 @@ Cada puerto WAN debe tener configurada la dirección IP que te entregó tu prove
 
 * **Verificación:** Verás todas las IPs activas listadas en la pestaña de direcciones con sus respectivas interfaces asociadas.
 
+![Config IP](images/01IP.png)
+
+
 ```mikrotik
 /ip firewall nat
 add chain=srcnat out-interface=ether1-WAN1-CANTV action=masquerade comment="NAT CANTV 600M"
