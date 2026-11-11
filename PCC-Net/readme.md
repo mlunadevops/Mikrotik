@@ -75,6 +75,9 @@ Cada puerto WAN debe tener configurada la dirección IP que te entregó tu prove
 
 ![Config IP](images/01IP.png)
 
+![Config IP](images/02ConfigDHCPinterface.png)
+
+
 
 ```mikrotik
 /ip firewall nat
