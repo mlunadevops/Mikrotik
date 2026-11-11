@@ -65,3 +65,11 @@ add dst-address=0.0.0.0/0 gateway=1.1.1.1 target-scope=30 distance=1 check-gatew
 add dst-address=0.0.0.0/0 gateway=8.8.8.8 target-scope=30 distance=2 check-gateway=ping comment="Ruta Secundaria WAN3 200M"
 add dst-address=0.0.0.0/0 gateway=9.9.9.9 target-scope=30 distance=3 check-gateway=ping comment="Ruta Terciaria WAN2 50M"
 add dst-address=0.0.0.0/0 gateway=208.67.222.222 target-scope=30 distance=4 check-gateway=ping comment="Ruta Cuaternaria WAN4"
+
+## 5. Control de Umbrales mediante Scripting y Netwatch
+
+En RouterOS, el comportamiento ante una pérdida o degradación severa de ancho de banda requiere monitorear o deshabilitar/habilitar dinámicamente las rutas.
+
+### Script de Control por Umbral de Saturación en WAN1
+
+Este script mide los bits por segundo en la interfaz WAN1 (`ether1-WAN1-CANTV`). Si la degradación es continua o sobrepasa cierto límite predeterminado, el sistema puede alertar o cambiar temporalmente el tráfico a la interfaz secundaria (Starlink).
