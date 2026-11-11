@@ -36,6 +36,9 @@ El primer paso dentro de RouterOS consiste en asignar un nombre identificable a 
 
 ![BGP WEIGTH](images/01Interfaces.png)
 
+![BGP WEIGTH](images/01Nombrar.png)
+
+
 **2.2** Configurar Interfaces por Terminal (CLI)
 
 Para renombrar las interfaces directamente desde la terminal de MikroTik (RouterOS), ejecuta los siguientes comandos:
