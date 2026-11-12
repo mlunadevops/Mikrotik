@@ -69,11 +69,18 @@ comment=CANTV_WAN_DHCP: **Una etiqueta** de identificación interna para ubicar 
 ```mikrotik
 # CANTV (Sin inyectar ruta por defecto a la tabla main)
 /ip dhcp-client add add-default-route=no comment=CANTV_WAN_DHCP interface=CANTV use-peer-dns=no
+```
+
+
 
 # GALANET
-/ip dhcp-client add comment=GALANET_WAN_DHCP interface=GALANET
 
+```mikrotik
+/ip dhcp-client add comment=GALANET_WAN_DHCP interface=GALANET
+```
 # STARLINK
+
+```mikrotik
 /ip dhcp-client add comment=STARLINK_WAN_DHCP interface=STARLINK
 ```
 
