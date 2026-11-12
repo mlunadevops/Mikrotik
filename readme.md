@@ -74,7 +74,7 @@ Esto te deja el camino libre para enrutar CANTV manualmente solo por su propia t
 
 **3.2)** GALANET: Inyecta ruta por defecto en 'main' con Prioridad 1 (Respaldo Inmediato)
 
-A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto significa que Galanet opera de forma estándar: recibe su IP por DHCP y sí inyecta su ruta por defecto en la tabla global (`main`), sirviendo como la pasarela base o respaldo predeterminado del sistema.
+A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto significa que Galanet opera de forma estándar: recibe su IP por DHCP y sí inyecta su ruta por defecto en la tabla global **(`main`)**, sirviendo como la pasarela base o respaldo predeterminado del sistema.
 
 ```mikrotik
 /ip dhcp-client add comment=GALANET_WAN_DHCP default-route-distance=1 interface=GALANET
@@ -82,13 +82,15 @@ A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto 
 
 **3.3)** STARLINK Inyecta ruta por defecto en 'main' con Prioridad 2 (Respaldo de Emergencia)
 
-A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto significa que Galanet opera de forma estándar: recibe su IP por DHCP y sí inyecta su ruta por defecto en la tabla global (`main`), sirviendo como la pasarela base o respaldo predeterminado del sistema.
+A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto significa que Galanet opera de forma estándar: recibe su IP por DHCP y sí inyecta su ruta por defecto en la tabla global **(`main`)**, sirviendo como la pasarela base o respaldo predeterminado del sistema.
 
 ```mikrotik
 /ip dhcp-client add comment=STARLINK_WAN_DHCP default-route-distance=2 interface=STARLINK
 ```
 
-# PASO 4: Rutas Estáticas por Tabla
+PASO 4: Rutas Estáticas por Tabla:
+
+**Ruta para GALANET y STARLINK:** No se requiere ninguna ruta estática manual. Al haber configurado sus clientes DHCP en los pasos anteriores sin bloquear la ruta por defecto, ambos proveedores inyectan y actualizan sus pasarelas de forma completamente automática en la tabla global **(main)**.
 
 **4.1)**  Ruta para CANTV en su tabla dedicada (gateway asignado por el módem CANTV)
 
@@ -117,14 +119,15 @@ A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto 
 
 ---
 
-### PASO 6: Regla de Mangle (Marcado de Enrutamiento)
+**PASO 6:** Regla de Mangle (Marcado de Enrutamiento)
+
+ **Eliminar reglas mangle previas para evitar duplicados**
 
 ```mikrotik
-# Eliminar reglas mangle previas para evitar duplicados
 /ip firewall mangle remove [find]
 ```
 
-# Marcar tráfico LAN para forzar salida por la tabla CANTV
+**Marcar tráfico LAN para forzar salida por la tabla CANTV**
 
 ```mikrotik
 /ip firewall mangle add action=mark-routing chain=prerouting comment="Ruta por defecto hacia CANTV" \
