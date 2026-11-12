@@ -272,15 +272,7 @@ El enrutador no adivina: evalúa los pings en tiempo real. Si los pings pasan, e
 Ejecuta el siguiente bloque en la terminal de tu MikroTik:
 
 ```mikrotik
-/tool netwatch
-# Configurar Netwatch para hacer ping a 1.1.1.1 usando la tabla FIB de CANTV
-/tool netwatch
-add interval=10s timeout=3s packet-count=3 \
-    comment="Monitoreo Enlace CANTV" \
-    host=1.1.1.1 \
-    routing-table=usar-cantv \
-    up-script="cantv_up" \
-    down-script="cantv_down"
+/tool netwatch add comment="Monitoreo Enlace CANTV" host=1.1.1.1 interval=10s timeout=3s packet-count=3 up-script="cantv_up" down-script="cantv_down"
 ```
 
 ### Paso 2: Crear los Scripts de Activación y Desactivación del Failover
