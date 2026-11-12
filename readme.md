@@ -45,6 +45,7 @@ A continuación tienes la guía completa paso a paso. Puedes copiar y pegar cada
 ---
 
 ### PASO 2: Red Local (LAN) y DHCP Server
+
 ```mikrotik
 /ip pool add name=dhcp_pool_lan ranges=192.168.1.2-192.168.1.239
 /ip dhcp-server add address-pool=dhcp_pool_lan interface=LAN lease-time=10h name=dhcp_lan
@@ -56,16 +57,23 @@ A continuación tienes la guía completa paso a paso. Puedes copiar y pegar cada
 
 ### PASO 3: Clientes DHCP de los Proveedores WAN
 
-interface=CANTV: Le indica al router que obtenga IP dinámica por DHCP a través del puerto físico llamado CANTV.
 
-add-default-route=no (La parte más crítica): Por defecto, cuando un proveedor te asigna IP por DHCP, el router inyecta automáticamente una ruta predeterminada (0.0.0.0/0) en la **tabla global (main)**. Al ponerlo en no, bloqueas que CANTV meta sus propias reglas por defecto en la tabla principal, lo que evita que rompa o compita con la navegación de tus otros enlaces. Esto te deja el camino libre para enrutar CANTV manualmente solo por su propia tabla (usar-cantv).
 
-use-peer-dns=no: Evita que el MikroTik acepte y sobrescriba automáticamente los servidores DNS que te mande el módem de CANTV, permitiéndote usar los DNS personalizados que tú prefieras (como 8.8.8.8 o 1.1.1.1).
+
+
 
 comment=CANTV_WAN_DHCP: **Una etiqueta** de identificación interna para ubicar rápidamente esta regla.
 
 
-# CANTV (Sin inyectar ruta por defecto a la tabla main)
+**3.1)** CANTV (Sin inyectar ruta por defecto a la tabla main)
+
+interface=CANTV: Obtenga IP por DHCP en puerto físico llamado CANTV.
+
+add-default-route=no (La parte más crítica): Por defecto, la configuracion IP por DHCP, se inyecta automáticamente una ruta  (0.0.0.0/0) en la **tabla global (main)**. 
+Al ponerlo en **no**, bloqueas que la config DHCP de CANTV se agregue en la tabla principal, lo que evita que rompa o compita con la navegación de tus otros enlaces. 
+Esto te deja el camino libre para enrutar CANTV manualmente solo por su propia tabla **(usar-cantv)**.
+
+use-peer-dns=no: Evita que el MikroTik sobrescriba los servidores DNS DHCP de CANTV, permitiéndote usar los DNS personalizados que tú prefieras (como 8.8.8.8 o 1.1.1.1).
 
 ```mikrotik
 /ip dhcp-client add add-default-route=no comment=CANTV_WAN_DHCP interface=CANTV use-peer-dns=no
