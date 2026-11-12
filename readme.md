@@ -81,13 +81,14 @@ A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto 
 /ip dhcp-client add comment=GALANET_WAN_DHCP default-route-distance=1 interface=GALANET
 ```
 
-**3.2)** STARLINK Inyecta ruta por defecto en 'main' con Prioridad 2 (Respaldo de Emergencia)
+**3.3)** STARLINK Inyecta ruta por defecto en 'main' con Prioridad 2 (Respaldo de Emergencia)
 
 A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto significa que Galanet opera de forma estándar: recibe su IP por DHCP y sí inyecta su ruta por defecto en la tabla global (`main`), sirviendo como la pasarela base o respaldo predeterminado del sistema.
 
 ```mikrotik
 /ip dhcp-client add comment=STARLINK_WAN_DHCP default-route-distance=2 interface=STARLINK
 ```
+
 ---
 
 # Ruta estática manual exclusiva para la tabla de CANTV
@@ -107,15 +108,20 @@ A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto 
 **4.2)**  Ruta para CANTV en su tabla dedicada (gateway asignado por el módem CANTV)
 
 ```mikrotik
-/ip route add distance=1 gateway=192.168.100.1 routing-table=usar-cantv
+/ip route add distance=1 gateway=CANTV routing-table=usar-cantv
 ```
 
 ---
 
 ### PASO 5: Firewall NAT Independiente por Interfaz
-```mikrotik
+
+
 # Eliminar reglas NAT genéricas previas
+
+```mikrotik
 /ip firewall nat remove [find]
+```
+
 
 # Crear reglas de Masquerade por interfaz de salida
 /ip firewall nat add action=masquerade chain=srcnat out-interface=CANTV comment="NAT CANTV"
