@@ -58,7 +58,6 @@ A continuación tienes la guía completa paso a paso. Puedes copiar y pegar cada
 
 comment=CANTV_WAN_DHCP: **Una etiqueta** de identificación interna para ubicar rápidamente esta regla.
 
-
 **3.1)** CANTV (Sin inyectar ruta por defecto a la tabla main)
 
 **interface=CANTV**: Obtenga IP por DHCP en puerto físico llamado CANTV.
@@ -89,32 +88,13 @@ A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto 
 /ip dhcp-client add comment=STARLINK_WAN_DHCP default-route-distance=2 interface=STARLINK
 ```
 
----
+# PASO 4: Rutas Estáticas por Tabla
 
-# Ruta estática manual exclusiva para la tabla de CANTV
-
-(El tráfico marcado se enviará al módem de CANTV)
-
-```mikrotik
-/ip route add distance=1 gateway=192.168.100.1 routing-table=usar-cantv
-```
-
-
-
-### PASO 4: Rutas Estáticas por Tabla
-
-**4.1)** Ruta para GALANET en su tabla dedicada
-
-```mikrotik
-/ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=172.19.24.101 routing-table=usar-galanet scope=30 target-scope=10
-```
-
-**4.2)**  Ruta para CANTV en su tabla dedicada (gateway asignado por el módem CANTV)
+**4.1)**  Ruta para CANTV en su tabla dedicada (gateway asignado por el módem CANTV)
 
 ```mikrotik
 /ip route add distance=1 gateway=CANTV routing-table=usar-cantv
 ```
-
 ---
 
 ### PASO 5: Firewall NAT Independiente por Interfaz
