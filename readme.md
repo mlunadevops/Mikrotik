@@ -257,7 +257,7 @@ Se supera el tiempo límite de espera (timeout=3s) sin recibir respuesta.
 
 Hay pérdida total de paquetes o el enlace deja de responder.
 
-En ese exacto momento, Netwatch cambia el estado del objetivo a Down (Abajo) y dispara de inmediato el script cantv_down (que desactiva el Mangle y pasa el tráfico a los respaldos).
+**En ese exacto momento, Netwatch cambia el estado del objetivo a Down (Abajo) y dispara de inmediato el script cantv_down (que desactiva el Mangle y pasa el tráfico a los respaldos).**
 
 Ejecuta el siguiente bloque en la terminal de tu MikroTik:
 
