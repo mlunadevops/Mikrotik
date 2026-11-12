@@ -293,11 +293,20 @@ Este script desactiva la regla de Mangle de CANTV. Al apagarse, el tráfico loca
 
 
 ```mikrotik
+```text
 /system script add name="cantv_down" source="
 :local mangleId [/ip firewall mangle find comment=\"Ruta por defecto hacia CANTV\"];
 :if (\$mangleId != \"\") do={
     /ip firewall mangle set \$mangleId disabled=yes;
     :log warning \"ALERTA: CANTV no responde (Latencia alta o perdida de paquetes). Conmutando trafico a respaldos.\";
+}
+"
+
+/system script add name="cantv_up" source="
+:local mangleId [/ip firewall mangle find comment=\"Ruta por defecto hacia CANTV\"];
+:if (\$mangleId != \"\") do={
+    /ip firewall mangle set \$mangleId disabled=no;
+    :log info \"RECUPERACION: El enlace CANTV esta estable nuevamente. Restableciendo trafico principal.\";
 }
 "
 ```
