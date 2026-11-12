@@ -119,7 +119,24 @@ Eliminar reglas NAT genéricas previas
 
 ---
 
-**PASO 6:** Regla de Mangle (Marcado de Enrutamiento)
+**PASO 6:** Regla de Mangle (Marcado de Enrutamiento):
+
+**¿Para qué se utiliza el Mangle en este escenario?**
+
+En MikroTik, la tabla de enrutamiento principal (`main`) normalmente decide por dónde sale todo basándose únicamente en las rutas por defecto. Sin embargo, cuando tienes múltiples proveedores de internet (Multi-WAN) y quieres que los paquetes de tus dispositivos locales viajen por un camino específico (por ejemplo, por CANTV en lugar de Galanet o Starlink), las reglas normales de enrutamiento no bastan.
+
+Aquí es donde entra **Mangle**: su función es interceptar los paquetes al vuelo y "etiquetarlos" o marcarles una ruta específica antes de que el router decida por dónde enviarlos.
+
+**Desglose detallado de cada parte de tu comando:**
+
+* `/ip firewall mangle add`: Le indica al MikroTik que cree una nueva regla de marcado.
+* `chain=prerouting`: Es el momento exacto en el que actúa la regla. Se ejecuta antes de que el router tome la decisión de enrutamiento, interceptando los paquetes apenas entran desde tu red local hacia el MikroTik.
+* `src-address=192.168.1.0/24`: Filtra y aplica la regla únicamente a los paquetes que provienen de tu red local (tus computadoras, teléfonos, etc.).
+* `dst-address=!192.168.1.0/24`: El signo de exclamación (`!`) significa "diferente de". Esto le dice al router: aplica esta marca a todo el tráfico, excepto si va dirigido a la misma red local. (Esto es vital para que las impresoras de la red o el intercambio de archivos locales sigan funcionando sin ser desviados a internet).
+* `action=mark-routing`: Es la acción que debe realizar. Le asigna una etiqueta de enrutamiento especial al paquete.
+* `new-routing-mark=usar-cantv`: Es el nombre de la etiqueta que se le imprime al paquete. Como esta etiqueta coincide con la tabla FIB `usar-cantv` que creamos antes, el MikroTik dice: *"Este paquete tiene la marca 'usar-cantv', así que debo buscar su salida única y exclusivamente en la tabla de enrutamiento de CANTV"*.
+* `passthrough=no`: Indica que esta es la última regla de Mangle que debe evaluar este paquete (detiene el procesamiento posterior para ahorrar recursos del router).
+* `comment="Ruta por defecto hacia CANTV"`: Una etiqueta informativa interna para identificar fácilmente la regla en la consola.
 
  **Eliminar reglas mangle previas para evitar duplicados**
 
