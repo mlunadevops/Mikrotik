@@ -248,10 +248,12 @@ Ejecuta el siguiente bloque en la terminal de tu MikroTik:
 
 ```mikrotik
 /tool netwatch
-add host=1.1.1.1 interval=10s timeout=3s route-table=usar-cantv up-script="\
-    :log info \"CANTV recuperado - Activando Mangle\";\
-    /ip firewall mangle set [find comment=\"Ruta por defecto hacia CANTV\"] disabled=no;" \
-    down-script="\
-    :log info \"CANTV caido - Desactivando Mangle\";\
-    /ip firewall mangle set [find comment=\"Ruta por defecto hacia CANTV\"] disabled=yes;"
+# Configurar Netwatch para hacer ping a 1.1.1.1 usando la tabla FIB de CANTV
+/tool netwatch
+add interval=10s timeout=3s packet-count=3 \
+    comment="Monitoreo Enlace CANTV" \
+    host=1.1.1.1 \
+    routing-table=usar-cantv \
+    up-script="cantv_up" \
+    down-script="cantv_down"
 ```
