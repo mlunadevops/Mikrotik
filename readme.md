@@ -88,7 +88,7 @@ A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto 
 /ip dhcp-client add comment=STARLINK_WAN_DHCP default-route-distance=2 interface=STARLINK
 ```
 
-PASO 4: Rutas Estáticas por Tabla:
+**PASO 4: Rutas Estáticas por Tabla:**
 
 **Ruta para GALANET y STARLINK:** No se requiere ninguna ruta estática manual. Al haber configurado sus clientes DHCP en los pasos anteriores sin bloquear la ruta por defecto, ambos proveedores inyectan y actualizan sus pasarelas de forma completamente automática en la tabla global **(main)**.
 
