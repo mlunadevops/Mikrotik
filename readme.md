@@ -65,13 +65,11 @@ use-peer-dns=no: Evita que el MikroTik acepte y sobrescriba automáticamente los
 comment=CANTV_WAN_DHCP: **Una etiqueta** de identificación interna para ubicar rápidamente esta regla.
 
 
+# CANTV (Sin inyectar ruta por defecto a la tabla main)
 
 ```mikrotik
-# CANTV (Sin inyectar ruta por defecto a la tabla main)
 /ip dhcp-client add add-default-route=no comment=CANTV_WAN_DHCP interface=CANTV use-peer-dns=no
 ```
-
-
 
 # GALANET
 
