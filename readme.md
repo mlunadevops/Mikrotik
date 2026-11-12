@@ -52,7 +52,6 @@ A continuación tienes la guía completa paso a paso. Puedes copiar y pegar cada
 /ip address add address=192.168.1.1/24 comment=LAN interface=LAN network=192.168.1.0
 /ip dhcp-server network add address=192.168.1.0/24 dns-server=8.8.8.8,1.1.1.1 gateway=192.168.1.1
 ```
-
 ---
 
 ### PASO 3: Clientes DHCP de los Proveedores WAN
@@ -74,12 +73,16 @@ Esto te deja el camino libre para enrutar CANTV manualmente solo por su propia t
 /ip dhcp-client add add-default-route=no comment=CANTV_WAN_DHCP interface=CANTV use-peer-dns=no
 ```
 
-# GALANET
+**3.2)** GALANET
+
+A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto significa que Galanet opera de forma estándar: recibe su IP por DHCP y sí inyecta su ruta por defecto en la tabla global (`main`), sirviendo como la pasarela base o respaldo predeterminado del sistema.
 
 ```mikrotik
 /ip dhcp-client add comment=GALANET_WAN_DHCP interface=GALANET
 ```
 # STARLINK
+
+A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto significa que Galanet opera de forma estándar: recibe su IP por DHCP y sí inyecta su ruta por defecto en la tabla global (`main`), sirviendo como la pasarela base o respaldo predeterminado del sistema.
 
 ```mikrotik
 /ip dhcp-client add comment=STARLINK_WAN_DHCP interface=STARLINK
