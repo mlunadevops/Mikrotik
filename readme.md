@@ -80,7 +80,7 @@ A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto 
 ```mikrotik
 /ip dhcp-client add comment=GALANET_WAN_DHCP interface=GALANET
 ```
-# STARLINK
+**3.2)** STARLINK
 
 A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto significa que Galanet opera de forma estándar: recibe su IP por DHCP y sí inyecta su ruta por defecto en la tabla global (`main`), sirviendo como la pasarela base o respaldo predeterminado del sistema.
 
