@@ -73,22 +73,28 @@ Esto te deja el camino libre para enrutar CANTV manualmente solo por su propia t
 /ip dhcp-client add add-default-route=no comment=CANTV_WAN_DHCP interface=CANTV use-peer-dns=no
 ```
 
-**3.2)** GALANET
+**3.2)** GALANET: Inyecta ruta por defecto en 'main' con Prioridad 1 (Respaldo Inmediato)
 
 A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto significa que Galanet opera de forma estándar: recibe su IP por DHCP y sí inyecta su ruta por defecto en la tabla global (`main`), sirviendo como la pasarela base o respaldo predeterminado del sistema.
 
 ```mikrotik
-/ip dhcp-client add comment=GALANET_WAN_DHCP interface=GALANET
+/ip dhcp-client add comment=GALANET_WAN_DHCP default-route-distance=1 interface=GALANET
 ```
-**3.2)** STARLINK
+
+**3.2)** STARLINK Inyecta ruta por defecto en 'main' con Prioridad 2 (Respaldo de Emergencia)
 
 A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto significa que Galanet opera de forma estándar: recibe su IP por DHCP y sí inyecta su ruta por defecto en la tabla global (`main`), sirviendo como la pasarela base o respaldo predeterminado del sistema.
 
 ```mikrotik
-/ip dhcp-client add comment=STARLINK_WAN_DHCP interface=STARLINK
+/ip dhcp-client add comment=STARLINK_WAN_DHCP default-route-distance=2 interface=STARLINK
 ```
-
 ---
+
+# Ruta estática manual exclusiva para la tabla de CANTV
+# (El tráfico marcado se enviará al módem de CANTV)
+/ip route add distance=1 gateway=192.168.100.1 routing-table=usar-cantv
+
+
 
 ### PASO 4: Rutas Estáticas por Tabla
 
