@@ -259,6 +259,16 @@ Hay pérdida total de paquetes o el enlace deja de responder.
 
 **En ese exacto momento, Netwatch cambia el estado del objetivo a Down (Abajo) y dispara de inmediato el script cantv_down (que desactiva el Mangle y pasa el tráfico a los respaldos).**
 
+2. ¿Cuándo ejecuta el script cantv_up?
+Se ejecuta cuando el enlace se recupera y vuelve a responder. Esto ocurre si:
+
+Después de haber estado caído, Netwatch envía sus paquetes de ping y todos o la cantidad requerida responden con éxito dentro del tiempo establecido antes de que expire el tiempo de espera.
+
+En ese momento, Netwatch cambia el estado del objetivo a Up (Arriba) y dispara el script cantv_up (que vuelve a encender el Mangle para restaurar a CANTV como enlace principal).
+
+Resumen en una frase:
+El enrutador no adivina: evalúa los pings en tiempo real. Si los pings pasan, ejecuta cantv_up. Si los pings fallan o se pierden, ejecuta cantv_down.
+
 Ejecuta el siguiente bloque en la terminal de tu MikroTik:
 
 ```mikrotik
