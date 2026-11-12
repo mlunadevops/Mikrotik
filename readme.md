@@ -235,3 +235,23 @@ Una vez aplicados los comandos, puedes verificar la correcta ejecución mediante
    /ip firewall mangle print
    ```
    *Comprueba que la regla alterne entre habilitada/deshabilitada según la actividad de tráfico.*
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+
+### Paso 1: Configurar Netwatch para vigilar CANTV
+
+Netwatch se encarga de lanzar *pings* constantes (por ejemplo, a un DNS confiable como `1.1.1.1` o `8.8.8.8`) forzando obligatoriamente la salida por la tabla de CANTV, para evaluar únicamente la salud de ese enlace.
+
+Ejecuta el siguiente bloque en la terminal de tu MikroTik:
+
+```mikrotik
+/tool netwatch
+add host=1.1.1.1 interval=10s timeout=3s route-table=usar-cantv up-script="\
+    :log info \"CANTV recuperado - Activando Mangle\";\
+    /ip firewall mangle set [find comment=\"Ruta por defecto hacia CANTV\"] disabled=no;" \
+    down-script="\
+    :log info \"CANTV caido - Desactivando Mangle\";\
+    /ip firewall mangle set [find comment=\"Ruta por defecto hacia CANTV\"] disabled=yes;"
+```
