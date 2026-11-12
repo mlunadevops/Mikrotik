@@ -308,13 +308,7 @@ Este script vuelve a encender la regla de Mangle para restaurar a CANTV como tu 
 
 
 ```mikrotik
-/system script
-add name="cantv_up" source="\
-    :local mangleId [/ip firewall mangle find comment=\\"Ruta por defecto hacia CANTV\\"];\
-    :if (\$mangleId != \\"\") do={\
-        /ip firewall mangle set \$mangleId disabled=no;\
-        :log info \"RECUPERACION: El enlace CANTV esta estable nuevamente. Restableciendo trafico principal.\";\
-    }"
+
 ```
 
 ### ¿Cómo funciona este método en la práctica?
