@@ -57,23 +57,18 @@ A continuación tienes la guía completa paso a paso. Puedes copiar y pegar cada
 
 ### PASO 3: Clientes DHCP de los Proveedores WAN
 
-
-
-
-
-
 comment=CANTV_WAN_DHCP: **Una etiqueta** de identificación interna para ubicar rápidamente esta regla.
 
 
 **3.1)** CANTV (Sin inyectar ruta por defecto a la tabla main)
 
-interface=CANTV: Obtenga IP por DHCP en puerto físico llamado CANTV.
+**interface=CANTV**: Obtenga IP por DHCP en puerto físico llamado CANTV.
 
-add-default-route=no (La parte más crítica): Por defecto, la configuracion IP por DHCP, se inyecta automáticamente una ruta  (0.0.0.0/0) en la **tabla global (main)**. 
+**add-default-route=no** (La parte más crítica): Por defecto, la configuracion IP por DHCP, se inyecta automáticamente una ruta  (0.0.0.0/0) en la **tabla global (main)**. 
 Al ponerlo en **no**, bloqueas que la config DHCP de CANTV se agregue en la tabla principal, lo que evita que rompa o compita con la navegación de tus otros enlaces. 
 Esto te deja el camino libre para enrutar CANTV manualmente solo por su propia tabla **(usar-cantv)**.
 
-use-peer-dns=no: Evita que el MikroTik sobrescriba los servidores DNS DHCP de CANTV, permitiéndote usar los DNS personalizados que tú prefieras (como 8.8.8.8 o 1.1.1.1).
+**use-peer-dns=no:** Evita que el MikroTik sobrescriba los servidores DNS DHCP de CANTV, permitiéndote usar los DNS personalizados que tú prefieras (como 8.8.8.8 o 1.1.1.1).
 
 ```mikrotik
 /ip dhcp-client add add-default-route=no comment=CANTV_WAN_DHCP interface=CANTV use-peer-dns=no
