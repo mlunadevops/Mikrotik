@@ -257,3 +257,43 @@ add interval=10s timeout=3s packet-count=3 \
     up-script="cantv_up" \
     down-script="cantv_down"
 ```
+
+### Paso 2: Crear los Scripts de Activación y Desactivación del Failover
+
+Ahora creamos los dos pequeños scripts que Netwatch disparará automáticamente cuando el enlace falle (*down*) o cuando se recupere (*up*).
+
+**Script cuando CANTV se CAE (`cantv_down`):**
+
+Este script desactiva la regla de Mangle de CANTV. Al apagarse, el tráfico local pierde el marcado y conmuta de inmediato hacia Galanet o Starlink.
+
+
+```mikrotik
+/system script add name="cantv_down" source="
+:local mangleId [/ip firewall mangle find comment=\"Ruta por defecto hacia CANTV\"];
+:if (\$mangleId != \"\") do={
+    /ip firewall mangle set \$mangleId disabled=yes;
+    :log warning \"ALERTA: CANTV no responde (Latencia alta o perdida de paquetes). Conmutando trafico a respaldos.\";
+}
+"
+```
+
+**Script cuando CANTV se RECUPERA (cantv_up):**
+Este script vuelve a encender la regla de Mangle para restaurar a CANTV como tu proveedor principal de forma transparente. Este script vuelve a encender la regla de Mangle de CANTV de forma dinámica buscándola por su comentario. Al habilitarse de nuevo, el tráfico de la red local recupera la etiqueta y regresa automáticamente al enlace principal.
+
+
+```mikrotik
+/system script
+add name="cantv_up" source="\
+    :local mangleId [/ip firewall mangle find comment=\\"Ruta por defecto hacia CANTV\\"];\
+    :if (\$mangleId != \\"\") do={\
+        /ip firewall mangle set \$mangleId disabled=no;\
+        :log info \"RECUPERACION: El enlace CANTV esta estable nuevamente. Restableciendo trafico principal.\";\
+    }"
+```
+
+### ¿Cómo funciona este método en la práctica?
+
+1. **Monitoreo constante:** Cada 10 segundos, Netwatch envía paquetes de *ping* hacia `1.1.1.1` utilizando estrictamente la ruta de CANTV (`routing-table=usar-cantv`).
+2. **Detección de fallo:** Si los *pings* fallan, se disparan tiempos de espera (*timeouts*) o hay pérdida de paquetes, Netwatch ejecuta instantáneamente el script `cantv_down`.
+3. **Failover transparente:** El script apaga el Mangle, los paquetes de la red local dejan de ser forzados hacia CANTV y salen de manera automática por el cliente DHCP de Galanet (que está en la tabla `main`).
+4. **Restauración automática:** Tan pronto como el enlace de CANTV vuelve a responder con normalidad a los *pings*, se ejecuta `cantv_up`, se reactiva el Mangle y todo el tráfico de la oficina regresa al enlace principal de forma transparente.
