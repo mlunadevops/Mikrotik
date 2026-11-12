@@ -92,13 +92,15 @@ A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto 
 
 ### PASO 4: Rutas Estáticas por Tabla
 
-# Ruta para GALANET en su tabla dedicada
+**4.1)** Ruta para GALANET en su tabla dedicada
 
 ```mikrotik
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=172.19.24.101 routing-table=usar-galanet scope=30 target-scope=10
 ```
 
-# Ruta para CANTV en su tabla dedicada (gateway asignado por el módem CANTV)
+**4.2)**  Ruta para CANTV en su tabla dedicada (gateway asignado por el módem CANTV)
+
+```mikrotik
 /ip route add distance=1 gateway=192.168.100.1 routing-table=usar-cantv
 ```
 
