@@ -244,6 +244,21 @@ Una vez aplicados los comandos, puedes verificar la correcta ejecución mediante
 
 Netwatch se encarga de lanzar *pings* constantes (por ejemplo, a un DNS confiable como `1.1.1.1` o `8.8.8.8`) forzando obligatoriamente la salida por la tabla de CANTV, para evaluar únicamente la salud de ese enlace.
 
+Esta herramienta (Netwatch) sabe cuándo ejecutar el script cantv_up o el script cantv_down basándose estrictamente en el resultado de las pruebas de ping que realiza cada 10 segundos hacia el destino configurado (1.1.1.1), utilizando obligatoriamente la tabla de enrutamiento de CANTV (routing-table=usar-cantv).
+
+La lógica que utiliza es un sistema de estados (Arriba / Abajo):
+
+1. ¿Cuándo ejecuta el script cantv_down?
+Se ejecuta cuando falla la prueba de conectividad. Esto ocurre si se cumple al menos una de estas condiciones durante el sondeo:
+
+Los 3 paquetes de ping enviados (packet-count=3) no reciben respuesta.
+
+Se supera el tiempo límite de espera (timeout=3s) sin recibir respuesta.
+
+Hay pérdida total de paquetes o el enlace deja de responder.
+
+En ese exacto momento, Netwatch cambia el estado del objetivo a Down (Abajo) y dispara de inmediato el script cantv_down (que desactiva el Mangle y pasa el tráfico a los respaldos).
+
 Ejecuta el siguiente bloque en la terminal de tu MikroTik:
 
 ```mikrotik
