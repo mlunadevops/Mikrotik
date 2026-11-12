@@ -102,7 +102,7 @@ PASO 4: Rutas Estáticas por Tabla:
 ### PASO 5: Firewall NAT Independiente por Interfaz
 
 
-# Eliminar reglas NAT genéricas previas
+Eliminar reglas NAT genéricas previas
 
 ```mikrotik
 /ip firewall nat remove [find]
