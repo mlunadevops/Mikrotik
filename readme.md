@@ -109,7 +109,7 @@ Eliminar reglas NAT genéricas previas
 ```
 
 
-# Crear reglas de Masquerade por interfaz de salida
+**Crear reglas de Masquerade por interfaz de salida:**
 
 ```mikrotik
 /ip firewall nat add action=masquerade chain=srcnat out-interface=CANTV comment="NAT CANTV"
