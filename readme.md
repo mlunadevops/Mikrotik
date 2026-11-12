@@ -156,10 +156,27 @@ Aquí es donde entra **Mangle**: su función es interceptar los paquetes al vuel
 ### PASO 7: Script de Monitoreo Dinámico por Umbral de Ancho de Banda
 > **Lógica:** El script mide la velocidad en la interfaz `CANTV`. Si el rendimiento baja de **95 Mbps**, desactiva la regla de Mangle para que todo el tráfico caiga automáticamente hacia `GALANET`. Cuando la interfaz `CANTV` supera los **150 Mbps**, vuelve a activar la regla de Mangle para restablecer a CANTV como enlace principal.
 
-Crea el script: **"check_cantv_bandwidth"**
-Lo relaciona con el mangle que permite usar la ruta a CANTV: :local mangleId **[/ip firewall mangle find comment=\"Ruta por defecto hacia CANTV\"];**
-Este Mangle deshabilita la ruta de CANTV :local mangleDisabled **[/ip firewall mangle get \$mangleId disabled];**
-Condicional:
+
+### Interacción entre la regla de Mangle y el script (Failover Automatizado)
+
+La interacción entre la regla de Mangle y el script es el mecanismo exacto que permite automatizar el *failover*. Trabajan en equipo como un interruptor de luz inteligente: el script es el sensor y la regla de Mangle es el interruptor físico.
+
+Así es como se comunican paso a paso:
+
+**1.** El estado normal (Todo funciona por CANTV)
+* La regla de Mangle está habilitada (`disabled=no`).
+* Por lo tanto, intercepta todo el tráfico de tu red local (`192.168.1.0/24`) y le coloca la etiqueta `new-routing-mark=usar-cantv`.
+* El MikroTik lee esa etiqueta y envía todo el tráfico a través del enlace principal de CANTV.
+
+**2.** ¿Qué pasa cuando CANTV cae o baja del umbral (< 95 Mbps)?
+Cada 10 segundos, el *Scheduler* ejecuta el script de monitoreo. El script hace lo siguiente:
+1. Mide cuántos bytes están pasando por la interfaz CANTV en ese instante y calcula la velocidad actual en Mbps.
+2. Revisa la regla de Mangle (identificándola mediante su comentario `"Ruta por defecto hacia CANTV"`) para ver si está activa o apagada.
+3. Si el cálculo da menos de 95 Mbps y la regla de Mangle está encendida, el script ejecuta la orden:
+
+```mikrotik
+/ip firewall mangle set [find comment="Ruta por defecto hacia CANTV"] disabled=yes
+
 
 ```mikrotik
 /system script add name="check_cantv_bandwidth" source="
