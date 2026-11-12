@@ -92,8 +92,12 @@ A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto 
 ---
 
 # Ruta estática manual exclusiva para la tabla de CANTV
-# (El tráfico marcado se enviará al módem de CANTV)
+
+(El tráfico marcado se enviará al módem de CANTV)
+
+```mikrotik
 /ip route add distance=1 gateway=192.168.100.1 routing-table=usar-cantv
+```
 
 
 
@@ -124,6 +128,8 @@ A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto 
 
 
 # Crear reglas de Masquerade por interfaz de salida
+
+```mikrotik
 /ip firewall nat add action=masquerade chain=srcnat out-interface=CANTV comment="NAT CANTV"
 /ip firewall nat add action=masquerade chain=srcnat out-interface=GALANET comment="NAT GALANET"
 /ip firewall nat add action=masquerade chain=srcnat out-interface=STARLINK comment="NAT STARLINK"
@@ -132,11 +138,15 @@ A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto 
 ---
 
 ### PASO 6: Regla de Mangle (Marcado de Enrutamiento)
+
 ```mikrotik
 # Eliminar reglas mangle previas para evitar duplicados
 /ip firewall mangle remove [find]
+```
 
 # Marcar tráfico LAN para forzar salida por la tabla CANTV
+
+```mikrotik
 /ip firewall mangle add action=mark-routing chain=prerouting comment="Ruta por defecto hacia CANTV" \
     dst-address=!192.168.1.0/24 new-routing-mark=usar-cantv passthrough=no src-address=192.168.1.0/24
 ```
@@ -145,6 +155,11 @@ A diferencia de CANTV, aquí no se especificó **`add-default-route=no`**. Esto 
 
 ### PASO 7: Script de Monitoreo Dinámico por Umbral de Ancho de Banda
 > **Lógica:** El script mide la velocidad en la interfaz `CANTV`. Si el rendimiento baja de **95 Mbps**, desactiva la regla de Mangle para que todo el tráfico caiga automáticamente hacia `GALANET`. Cuando la interfaz `CANTV` supera los **150 Mbps**, vuelve a activar la regla de Mangle para restablecer a CANTV como enlace principal.
+
+Crea el script: **"check_cantv_bandwidth"**
+Lo relaciona con el mangle que permite usar la ruta a CANTV: :local mangleId **[/ip firewall mangle find comment=\"Ruta por defecto hacia CANTV\"];**
+Este Mangle deshabilita la ruta de CANTV :local mangleDisabled **[/ip firewall mangle get \$mangleId disabled];**
+Condicional:
 
 ```mikrotik
 /system script add name="check_cantv_bandwidth" source="
