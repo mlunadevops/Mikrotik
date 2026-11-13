@@ -118,9 +118,47 @@ Las rutas estáticas por defecto (`0.0.0.0/0`) para cada proveedor están asocia
   * Un script programado en el sistema que evalúa mediante una petición HTTP (`/tool fetch`) a Cloudflare (`speed.cloudflare.com`) utilizando la tabla `usar-cantv` si el enlace principal responde[cite: 2].
   * Si el enlace falla (`on-error`), comprueba si la interfaz `GALANET` está activa (`running`). De estarlo, reescribe dinámicamente la regla de Mangle para desviar el tráfico hacia **Galanet** (`usar-galanet`)[cite: 2].
   * Si Galanet tampoco está disponible, conmuta por seguridad hacia **Starlink** (`usar-starlink`)[cite: 2].
+    
 * **Herramienta Netwatch**:
   * Monitorea de forma continua al host `1.1.1.1` cada `10s` (con 3 paquetes de sondeo y timeout de 3s)[cite: 2].
   * Al haber pérdida de paquetes, ejecuta automáticamente la acción de caída llamando a `/system script run cantv_down`[cite: 2].
+
+ ```text
+/system clock set time-zone-name=America/Caracas
+/tool romon set enabled=yes
+ ```
+
+ ```text
+/system script add dont-require-permissions=yes name=cantv_down owner=admin2 policy=ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon source=":local mangleId [/ip firewall mangle find comment=\"Ruta por defecto hacia CANTV\"];\
+    \n:local galanetUp [/interface get [find name=\"GALANET\"] running];\
+    \n:local testResult 0;\
+    \n\
+    \n:do {\
+    \n    /tool fetch mode=https url=\"https://speed.cloudflare.com/__down\?bytes=5000000\" output=none routing-table=usar-cantv;\
+    \n    :set testResult 1;\
+    \n} on-error={\
+    \n    :set testResult 0;\
+    \n}\
+    \n\
+    \n:if (\$mangleId != \"\") do={\
+    \n    :if (\$testResult = 0) do={\
+    \n        :if (\$galanetUp = true) do={\
+    \n            /ip firewall mangle set \$mangleId new-routing-mark=usar-galanet;\
+    \n            :log warning \"ALERTA: CANTV degradado o caido. Redirigiendo trafico a Galanet.\";\
+    \n        } else={\
+    \n            /ip firewall mangle set \$mangleId new-routing-mark=usar-starlink;\
+    \n            :log error \"CRITICO: CANTV y Galanet no disponibles. Conmutando a Starlink.\";\
+    \n        }\
+    \n    } else={\
+    \n        :log info \"VERIFICACION: El rendimiento de CANTV se mantiene estable sobre el umbral.\";\
+    \n    }\
+    \n}"
+
+/tool netwatch add comment="Monitoreo Enlace CANTV" down-script="/system script run cantv_down" host=1.1.1.1 interval=10s packet-count=3 timeout=3s type=simple up-script="/system script run cantv_up"
+ ```
+
+
+
 
 ---
 
