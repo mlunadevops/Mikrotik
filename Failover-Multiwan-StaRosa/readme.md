@@ -2,6 +2,9 @@
 
 Configuración de enrutamiento y respaldo automático implementada en un router **MikroTik E50UG** (RouterOS 7.21.4), diseñada para gestionar múltiples conexiones a internet (CANTV, GALANET y STARLINK) con un esquema de alta disponibilidad.
 
+
+![Topologia](images/01Topologia.jpg)
+
 ---
 
 ## 1. Interfaces de Red (Puertos físicos):
