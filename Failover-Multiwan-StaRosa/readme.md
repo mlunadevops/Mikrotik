@@ -114,19 +114,20 @@ Las rutas estáticas por defecto (`0.0.0.0/0`) para cada proveedor están asocia
 ---
 
 ## 6. Automatización y Monitoreo (Netwatch y Scripts)
+
+* **Herramienta Netwatch**:
+  * Monitorea de forma continua al host `1.1.1.1` cada `10s` (con 3 paquetes de sondeo y timeout de 3s).
+  * Al haber pérdida de paquetes, ejecuta automáticamente la acción de caída llamando a `/system script run cantv_down`.
+
+
+ ```text
+/tool netwatch add comment="Monitoreo Enlace CANTV" down-script="/system script run cantv_down" host=1.1.1.1 interval=10s packet-count=3 timeout=3s type=simple up-script="/system script run cantv_up"
+ ```
 * **Script `cantv_down`**:
   * Un script programado en el sistema que evalúa mediante una petición HTTP (`/tool fetch`) a Cloudflare (`speed.cloudflare.com`) utilizando la tabla `usar-cantv` si el enlace principal responde[cite: 2].
   * Si el enlace falla (`on-error`), comprueba si la interfaz `GALANET` está activa (`running`). De estarlo, reescribe dinámicamente la regla de Mangle para desviar el tráfico hacia **Galanet** (`usar-galanet`)[cite: 2].
-  * Si Galanet tampoco está disponible, conmuta por seguridad hacia **Starlink** (`usar-starlink`)[cite: 2].
+  * Si Galanet tampoco está disponible, conmuta por seguridad hacia **Starlink** (`usar-starlink`).
     
-* **Herramienta Netwatch**:
-  * Monitorea de forma continua al host `1.1.1.1` cada `10s` (con 3 paquetes de sondeo y timeout de 3s)[cite: 2].
-  * Al haber pérdida de paquetes, ejecuta automáticamente la acción de caída llamando a `/system script run cantv_down`[cite: 2].
-
- ```text
-/system clock set time-zone-name=America/Caracas
-/tool romon set enabled=yes
- ```
 
  ```text
 /system script add dont-require-permissions=yes name=cantv_down owner=admin2 policy=ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon source=":local mangleId [/ip firewall mangle find comment=\"Ruta por defecto hacia CANTV\"];\
@@ -153,15 +154,19 @@ Las rutas estáticas por defecto (`0.0.0.0/0`) para cada proveedor están asocia
     \n        :log info \"VERIFICACION: El rendimiento de CANTV se mantiene estable sobre el umbral.\";\
     \n    }\
     \n}"
-
-/tool netwatch add comment="Monitoreo Enlace CANTV" down-script="/system script run cantv_down" host=1.1.1.1 interval=10s packet-count=3 timeout=3s type=simple up-script="/system script run cantv_up"
  ```
-
-
-
 
 ---
 
 ## 7. Ajustes de Sistema
-* **Zona Horaria**: Configurada en `America/Caracas`[cite: 2].
-* **RoMon**: Habilitado (`enabled=yes`) para la gestión administrativa interna entre equipos MikroTik de la red[cite: 2].
+* **Zona Horaria**: Configurada en `America/Caracas`.
+
+ ```text
+/system clock set time-zone-name=America/Caracas
+ ```
+  
+* **RoMon**: Habilitado (`enabled=yes`) para la gestión administrativa interna entre equipos MikroTik de la red.
+
+ ```text
+/tool romon set enabled=yes
+ ```
