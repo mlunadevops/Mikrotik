@@ -16,6 +16,20 @@ El equipo mapea sus puertos físicos a nombres lógicos identificables para las 
 * **`ISP`** (ether4): Interfaz de respaldo adicional (actualmente inactiva / *not active*).
 * **`LAN`** (ether5): Interfaz de red local (Switch/Bridge local).
 
+Renombrar interfaces fisicas:
+
+```text
+/interface ethernet set [ find default-name=ether1 ] name=CANTV
+/interface ethernet set [ find default-name=ether2 ] name=GALANET
+/interface ethernet set [ find default-name=ether3 ] name=STARLINK
+/interface ethernet set [ find default-name=ether4 ] name=ISP
+/interface ethernet set [ find default-name=ether5 ] name=LAN
+```
+
+
+
+
+
 ---
 
 ## 2. Red Local (LAN) y Servidor DHCP
