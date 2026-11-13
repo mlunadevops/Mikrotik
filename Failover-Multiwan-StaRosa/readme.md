@@ -1,16 +1,17 @@
 # Documentación de Configuración MikroTik (Failover Multi-WAN)
 
-Configuración de enrutamiento y respaldo automático implementada en un router **MikroTik E50UG** (RouterOS 7.21.4)[cite: 2], diseñada para gestionar múltiples conexiones a internet (CANTV, GALANET y STARLINK) con un esquema de alta disponibilidad[cite: 2].
+Configuración de enrutamiento y respaldo automático implementada en un router **MikroTik E50UG** (RouterOS 7.21.4), diseñada para gestionar múltiples conexiones a internet (CANTV, GALANET y STARLINK) con un esquema de alta disponibilidad.
 
 ---
 
-## 1. Interfaces de Red (Puertos físicos)
+## 1. Interfaces de Red (Puertos físicos):
+
 El equipo mapea sus puertos físicos a nombres lógicos identificables para las distintas proveedoras y la red local:
-* **`CANTV`** (ether1): Enlace WAN principal[cite: 2].
-* **`GALANET`** (ether2): Enlace WAN de respaldo secundario[cite: 2].
-* **`STARLINK`** (ether3): Enlace WAN de respaldo terciario / satelital[cite: 2].
-* **`ISP`** (ether4): Interfaz de respaldo adicional (actualmente inactiva / *not active*)[cite: 2].
-* **`LAN`** (ether5): Interfaz de red local (Switch/Bridge local)[cite: 2].
+* **`CANTV`** (ether1): Enlace WAN principal.
+* **`GALANET`** (ether2): Enlace WAN de respaldo secundario.
+* **`STARLINK`** (ether3): Enlace WAN de respaldo terciario / satelital.
+* **`ISP`** (ether4): Interfaz de respaldo adicional (actualmente inactiva / *not active*).
+* **`LAN`** (ether5): Interfaz de red local (Switch/Bridge local).
 
 ---
 
