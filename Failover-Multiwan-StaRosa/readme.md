@@ -1,6 +1,6 @@
 # Documentación de Configuración MikroTik (Failover Multi-WAN)
 
-Configuración de enrutamiento y respaldo automático implementada en un router **MikroTik E50UG** (RouterOS 7.21.4), diseñada para gestionar múltiples conexiones a internet (CANTV, GALANET y STARLINK) con un esquema de alta disponibilidad.
+Configuración de enrutamiento y respaldo automático implementada en un router **MikroTik E50UG** (RouterOS 7.21.4), gestiona múltiples ISP (CANTV, GALANET y STARLINK) con un esquema de alta disponibilidad (HA).
 
 
 ![Topologia](images/01Topologia.jpg)
