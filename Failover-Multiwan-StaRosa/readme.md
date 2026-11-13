@@ -25,7 +25,6 @@ Renombrar interfaces fisicas:
 /interface ethernet set [ find default-name=ether4 ] name=ISP
 /interface ethernet set [ find default-name=ether5 ] name=LAN
 ```
-
 ---
 
 ## Paso 2. Red Local (LAN) y Servidor DHCP
@@ -42,14 +41,19 @@ Se configura el direccionamiento interno para la red de la oficina/hogar:
 /ip address add address=192.168.1.1/24 comment=LAN interface=LAN network=192.168.1.0
 /ip dhcp-server network add address=192.168.1.0/24 dns-server=8.8.8.8,1.1.1.1 gateway=192.168.1.1
 ```
-
 ---
 
 ## Paso 3: Configuración de Clientes DHCP (WAN)
 
-Configura las interfaces WAN para recibir su configuracion DHCP (nota que CANTV tiene add-default-route=no para gestionarlo mediante tablas personalizadas)
+Configura las interfaces WAN para recibir su configuracion DHCP (CANTV tiene **add-default-route=no** para gestionarlo mediante tablas personalizadas)
 
-
+```text
+/ip dhcp-client add add-default-route=no comment=CANTV_WAN_DHCP interface=CANTV use-peer-dns=no
+/ip dhcp-client add comment=GALANET_WAN_DHCP interface=GALANET
+/ip dhcp-client add comment=STARLINK_WAN_DHCP interface=STARLINK
+/ip dhcp-client add comment=ISP_WAN_DHCP interface=ISP disabled=yes
+```
+---
 
 ## 3. Tablas de Enrutamiento (Routing Tables)
 Para permitir que el tráfico salga por rutas específicas según el proveedor, se definieron tres tablas de enrutamiento basadas en políticas (FIB):
