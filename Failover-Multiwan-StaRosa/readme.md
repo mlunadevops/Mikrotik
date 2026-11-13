@@ -26,10 +26,6 @@ Renombrar interfaces fisicas:
 /interface ethernet set [ find default-name=ether5 ] name=LAN
 ```
 
-
-
-
-
 ---
 
 ## 2. Red Local (LAN) y Servidor DHCP
@@ -39,6 +35,13 @@ Se configura el direccionamiento interno para la red de la oficina/hogar:
 * **Pool DHCP**: `192.168.1.2 - 192.168.1.239` (Servidor DHCP `dhcp_lan` concesión de *10 horas*).
 * **DNS Asignados por DHCP**: `8.8.8.8` y `1.1.1.1`.
 * **Asignaciones Estáticas (Leases)**: Reservas de IP  (servidores, cajas registradoras, impresoras, DVRs, puntos de acceso Deco y equipos de personal clave) en el rango `192.168.1.40` a `192.168.1.247`.
+
+```text
+/ip pool add name=dhcp_pool_lan ranges=192.168.1.2-192.168.1.239
+/ip dhcp-server add address-pool=dhcp_pool_lan interface=LAN lease-time=10h name=dhcp_lan
+/ip address add address=192.168.1.1/24 comment=LAN interface=LAN network=192.168.1.0
+/ip dhcp-server network add address=192.168.1.0/24 dns-server=8.8.8.8,1.1.1.1 gateway=192.168.1.1
+```
 
 ---
 
