@@ -7,7 +7,7 @@ Configuración de enrutamiento y respaldo automático implementada en un router 
 
 ---
 
-## 1. Interfaces de Red (Puertos físicos):
+## Paso 1. Interfaces de Red (Puertos físicos):
 
 El equipo mapea sus puertos físicos a nombres lógicos identificables para las distintas proveedoras y la red local:
 * **`CANTV`** (ether1): Enlace WAN principal.
@@ -28,7 +28,7 @@ Renombrar interfaces fisicas:
 
 ---
 
-## 2. Red Local (LAN) y Servidor DHCP
+## Paso 2. Red Local (LAN) y Servidor DHCP
 Se configura el direccionamiento interno para la red de la oficina/hogar:
 * **Segmento de red (LAN)**: `192.168.1.0/24`.
 * **Gateway LAN**: `192.168.1.1`.
@@ -45,11 +45,19 @@ Se configura el direccionamiento interno para la red de la oficina/hogar:
 
 ---
 
+## Paso 3: Configuración de Clientes DHCP (WAN)
+
+Configura las interfaces WAN para recibir su configuracion DHCP (nota que CANTV tiene add-default-route=no para gestionarlo mediante tablas personalizadas)
+
+
+
 ## 3. Tablas de Enrutamiento (Routing Tables)
 Para permitir que el tráfico salga por rutas específicas según el proveedor, se definieron tres tablas de enrutamiento basadas en políticas (FIB):
 1. **`usar-cantv`**: Tabla dedicada al tráfico que sale por CANTV.
 2. **`usar-galanet`**: Tabla dedicada al tráfico que sale por GALANET.
 3. **`usar-starlink`**: Tabla dedicada al tráfico que sale por STARLINK.
+
+
 
 ---
 
