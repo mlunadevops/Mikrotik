@@ -95,7 +95,14 @@ Las rutas estáticas por defecto (`0.0.0.0/0`) para cada proveedor están asocia
 
 ## 5. Firewall: Mangle y NAT
 * **Mangle (Marcado de Rutas)**:
-  * Posee una regla principal en la cadena `prerouting` que captura todo el tráfico proveniente de la red local (`192.168.1.0/24`) dirigido hacia internet (`dst-address=!192.168.1.0/24`) y le asigna la marca de enrutamiento **`usar-cantv`**[cite: 2]. Esto define que CANTV sea la vía predeterminada de salida[cite: 2].
+  * Posee una regla principal en la cadena `prerouting` que captura todo el tráfico proveniente de la red local (`192.168.1.0/24`) dirigido hacia internet (`dst-address=!192.168.1.0/24`) y le asigna la marca de enrutamiento **`usar-cantv`**. Esto define que CANTV sea la vía predeterminada de salida.
+
+```text
+
+```
+
+ 
+
 * **NAT (Masquerade)**:
   * Contiene reglas de enmascaramiento independientes para traducir las IPs privadas de la LAN hacia las tres interfaces WAN (`CANTV`, `GALANET`, y `STARLINK`), garantizando que cualquier interfaz activa pueda enrutar el tráfico si se le asigna la marca correcta[cite: 2].
 
