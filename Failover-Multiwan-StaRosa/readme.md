@@ -45,7 +45,7 @@ Se configura el direccionamiento interno para la red de la oficina/hogar:
 
 ## Paso 3: Configuración de Clientes DHCP (WAN)
 
-Configura las interfaces WAN para recibir su configuracion DHCP (CANTV tiene **add-default-route=no** para gestionarlo mediante tablas personalizadas)
+Configura las interfaces WAN para recibir su configuracion DHCP (CANTV tiene **add-default-route=no** para gestionarlo mediante una tabla fib personalizadas)
 
 ```text
 /ip dhcp-client add add-default-route=no comment=CANTV_WAN_DHCP interface=CANTV use-peer-dns=no
@@ -55,17 +55,36 @@ Configura las interfaces WAN para recibir su configuracion DHCP (CANTV tiene **a
 ```
 ---
 
-## 3. Tablas de Enrutamiento (Routing Tables)
-Para permitir que el tráfico salga por rutas específicas según el proveedor, se definieron tres tablas de enrutamiento basadas en políticas (FIB):
-1. **`usar-cantv`**: Tabla dedicada al tráfico que sale por CANTV.
-2. **`usar-galanet`**: Tabla dedicada al tráfico que sale por GALANET.
-3. **`usar-starlink`**: Tabla dedicada al tráfico que sale por STARLINK.
+## 3. Tablas de Enrutamiento (Routing Tables):
 
+Para permitir que el tráfico salga por rutas específicas según el proveedor, se definieron tres (3) **tablas de enrutamiento basadas en políticas (FIB)**:
+
+1. **`usar-cantv`**: Tabla de enrutamiento (fib) dedicada al tráfico que sale por CANTV.
+2. **`usar-galanet`**: Tabla de enrutamiento (fib) dedicada al tráfico que sale por GALANET.
+3. **`usar-starlink`**: Tabla de enrutamiento (fib) dedicada al tráfico que sale por STARLINK.
+
+```text
+/routing table add fib name=usar-cantv
+/routing table add fib name=usar-galanet
+/routing table add disabled=no fib name=usar-starlink
+```
+
+/ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=192.168.100.1 routing-table=usar-cantv scope=30 target-scope=10
+/ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=172.19.24.101 routing-table=usar-galanet scope=30 target-scope=10
+/ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=192.168.2.1 routing-table=usar-starlink scope=30 target-scope=10
+/ip route add disabled=yes dst-address=1.1.1.1 gateway=192.168.100.1 routing-table=usar-cantv
+
+/ip firewall mangle add action=mark-routing chain=prerouting comment="Ruta por defecto hacia CANTV" dst-address=!192.168.1.0/24 new-routing-mark=usar-cantv passthrough=no src-address=192.168.1.0/24
+
+/ip firewall nat add action=masquerade chain=srcnat comment="NAT CANTV" out-interface=CANTV
+/ip firewall nat add action=masquerade chain=srcnat comment="NAT GALANET" out-interface=GALANET
+/ip firewall nat add action=masquerade chain=srcnat comment="NAT STARLINK" out-interface=STARLINK
 
 
 ---
 
-## 4. Enrutamiento y Puertas de Enlace (Gateways)
+## 4. Enrutamiento y Puertas de Enlace (Gateways):
+
 Las rutas estáticas por defecto (`0.0.0.0/0`) para cada proveedor están asociadas a sus respectivas tablas y saltos (gateways):
 * **CANTV**: Gateway a ISP `192.168.100.1` asociado a la tabla `usar-cantv`.
 * **GALANET**: Gateway a ISP `172.19.24.101` asociado a la tabla `usar-galanet`.
