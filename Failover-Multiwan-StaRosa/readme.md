@@ -17,19 +17,19 @@ El equipo mapea sus puertos físicos a nombres lógicos identificables para las 
 
 ## 2. Red Local (LAN) y Servidor DHCP
 Se configura el direccionamiento interno para la red de la oficina/hogar:
-* **Segmento de red**: `192.168.1.0/24`.
-* **Gateway LAN**: `192.168.1.1` (asignado a la interfaz `LAN`).
-* **Rango de IPs Dinámicas (Pool)**: `192.168.1.2 - 192.168.1.239` (Asignadas por el servidor DHCP `dhcp_lan` con un tiempo de concesión de *10 horas*).
+* **Segmento de red (LAN)**: `192.168.1.0/24`.
+* **Gateway LAN**: `192.168.1.1`.
+* **Pool DHCP**: `192.168.1.2 - 192.168.1.239` (Servidor DHCP `dhcp_lan` concesión de *10 horas*).
 * **DNS Asignados por DHCP**: `8.8.8.8` y `1.1.1.1`.
-* **Asignaciones Estáticas (Leases)**: Cuenta con múltiples reservas de IP fijas para dispositivos críticos (servidores, cajas registradoras, impresoras, DVRs, puntos de acceso Deco y equipos de personal clave) en el rango `192.168.1.40` a `192.168.1.247`.
+* **Asignaciones Estáticas (Leases)**: Reservas de IP  (servidores, cajas registradoras, impresoras, DVRs, puntos de acceso Deco y equipos de personal clave) en el rango `192.168.1.40` a `192.168.1.247`.
 
 ---
 
 ## 3. Tablas de Enrutamiento (Routing Tables)
 Para permitir que el tráfico salga por rutas específicas según el proveedor, se definieron tres tablas de enrutamiento basadas en políticas (FIB):
-1. **`usar-cantv`**: Tabla dedicada al tráfico que sale por CANTV[cite: 2].
-2. **`usar-galanet`**: Tabla dedicada al tráfico que sale por GALANET[cite: 2].
-3. **`usar-starlink`**: Tabla dedicada al tráfico que sale por STARLINK[cite: 2].
+1. **`usar-cantv`**: Tabla dedicada al tráfico que sale por CANTV.
+2. **`usar-galanet`**: Tabla dedicada al tráfico que sale por GALANET.
+3. **`usar-starlink`**: Tabla dedicada al tráfico que sale por STARLINK.
 
 ---
 
