@@ -38,10 +38,10 @@ Para permitir que el tráfico salga por rutas específicas según el proveedor, 
 
 ## 4. Enrutamiento y Puertas de Enlace (Gateways)
 Las rutas estáticas por defecto (`0.0.0.0/0`) para cada proveedor están asociadas a sus respectivas tablas y saltos (gateways):
-* **CANTV**: Gateway `192.168.100.1` asociado a la tabla `usar-cantv`[cite: 2].
-* **GALANET**: Gateway `172.19.24.101` asociado a la tabla `usar-galanet`[cite: 2].
-* **STARLINK**: Gateway `192.168.2.1` asociado a la tabla `usar-starlink`[cite: 2].
-* **Monitoreo de red**: Existe una ruta estática hacia `1.1.1.1` apuntando a `192.168.100.1` bajo la tabla `usar-cantv` (actualmente deshabilitada `disabled=yes`)[cite: 2].
+* **CANTV**: Gateway a ISP `192.168.100.1` asociado a la tabla `usar-cantv`.
+* **GALANET**: Gateway a ISP `172.19.24.101` asociado a la tabla `usar-galanet`.
+* **STARLINK**: Gateway a ISP`192.168.2.1` asociado a la tabla `usar-starlink`.
+* **Monitoreo de red**: Existe una ruta estática hacia `1.1.1.1` apuntando a `192.168.100.1` bajo la tabla **`usar-cantv`** (actualmente deshabilitada `disabled=yes).
 
 ---
 
