@@ -74,11 +74,7 @@ Para permitir que el tráfico salga por rutas específicas según el proveedor, 
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=192.168.2.1 routing-table=usar-starlink scope=30 target-scope=10
 /ip route add disabled=yes dst-address=1.1.1.1 gateway=192.168.100.1 routing-table=usar-cantv
 
-/ip firewall mangle add action=mark-routing chain=prerouting comment="Ruta por defecto hacia CANTV" dst-address=!192.168.1.0/24 new-routing-mark=usar-cantv passthrough=no src-address=192.168.1.0/24
 
-/ip firewall nat add action=masquerade chain=srcnat comment="NAT CANTV" out-interface=CANTV
-/ip firewall nat add action=masquerade chain=srcnat comment="NAT GALANET" out-interface=GALANET
-/ip firewall nat add action=masquerade chain=srcnat comment="NAT STARLINK" out-interface=STARLINK
 
 
 ---
@@ -94,17 +90,26 @@ Las rutas estáticas por defecto (`0.0.0.0/0`) para cada proveedor están asocia
 ---
 
 ## 5. Firewall: Mangle y NAT
+
 * **Mangle (Marcado de Rutas)**:
   * Posee una regla principal en la cadena `prerouting` que captura todo el tráfico proveniente de la red local (`192.168.1.0/24`) dirigido hacia internet (`dst-address=!192.168.1.0/24`) y le asigna la marca de enrutamiento **`usar-cantv`**. Esto define que CANTV sea la vía predeterminada de salida.
 
-```text
 
+```text
+/ip firewall mangle add action=mark-routing chain=prerouting comment="Ruta por defecto hacia CANTV" dst-address=!192.168.1.0/24 new-routing-mark=usar-cantv passthrough=no src-address=192.168.1.0/24
 ```
 
  
 
 * **NAT (Masquerade)**:
-  * Contiene reglas de enmascaramiento independientes para traducir las IPs privadas de la LAN hacia las tres interfaces WAN (`CANTV`, `GALANET`, y `STARLINK`), garantizando que cualquier interfaz activa pueda enrutar el tráfico si se le asigna la marca correcta[cite: 2].
+
+* Contiene reglas de enmascaramiento independientes para traducir las IPs privadas de la LAN hacia las tres interfaces WAN (`CANTV`, `GALANET`, y `STARLINK`), garantizando que cualquier interfaz activa pueda enrutar el tráfico si se le asigna la marca correcta.
+
+ ```text
+/ip firewall nat add action=masquerade chain=srcnat comment="NAT CANTV" out-interface=CANTV
+/ip firewall nat add action=masquerade chain=srcnat comment="NAT GALANET" out-interface=GALANET
+/ip firewall nat add action=masquerade chain=srcnat comment="NAT STARLINK" out-interface=STARLINK
+```
 
 ---
 
