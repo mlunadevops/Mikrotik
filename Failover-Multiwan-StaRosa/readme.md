@@ -89,7 +89,7 @@ Para permitir que el tráfico salga por rutas específicas según el proveedor (
 /routing table add disabled=no fib name=usar-starlink
 ```
 
-Colocar la rutas especificas en cada tabla:
+Colocar la rutas especificas en cada una de las 3 tablas **(usar-cantv,usar-galanet,usar-starlink)**:
 
 ```text
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=192.168.100.1 routing-table=usar-cantv scope=30 target-scope=10
