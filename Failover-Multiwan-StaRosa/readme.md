@@ -154,6 +154,24 @@ Ese comando crea una ruta estática específica para monitoreo dentro de la tabl
 * **Mangle (Marcado de Rutas)**:
 * Posee una regla principal en la cadena `prerouting` que captura todo el tráfico proveniente de la red local (`192.168.1.0/24`) dirigido hacia internet (`dst-address=!192.168.1.0/24`) y le asigna la marca de enrutamiento **`usar-cantv`**. Esto define que CANTV sea la vía predeterminada de salida.
 
+## Desglose de Parámetros en Reglas Mangle (RouterOS)
+
+* **`chain=prerouting`**
+  * Procesa los paquetes antes de que el router decida por dónde enrutarlos.
+* **`src-address=192.168.1.0/24`**
+  * Se aplica únicamente al tráfico originado por los equipos de la LAN (red `192.168.1.0/24`).
+* **`dst-address=!192.168.1.0/24`**
+  * El signo `!` significa "NO".
+  * Por tanto, la regla afecta únicamente al tráfico cuyo destino no sea la propia red local.
+  * Es decir, internet o redes externas.
+* **`action=mark-routing`**
+  * Marca el paquete con una etiqueta de enrutamiento.
+* **`new-routing-mark=usar-cantv`**
+  * Asigna la marca `usar-cantv`.
+  * Después, RouterOS buscará rutas dentro de la tabla de enrutamiento llamada `usar-cantv`.
+* **`passthrough=no`**
+  * Cuando la regla coincide, deja de evaluar otras reglas Mangle posteriores.
+
 
 ```text
 /ip firewall mangle add action=mark-routing chain=prerouting comment="Ruta por defecto hacia CANTV" dst-address=!192.168.1.0/24 new-routing-mark=usar-cantv passthrough=no src-address=192.168.1.0/24
@@ -169,6 +187,7 @@ new-routing-mark=usar-cantv \
 passthrough=no \
 src-address=192.168.1.0/24
 ```
+
  
 
 ---
