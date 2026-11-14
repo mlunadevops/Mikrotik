@@ -71,7 +71,7 @@ Configura las interfaces WAN para recibir su configuracion DHCP (CANTV tiene **a
 
 ## 3. Tablas de Enrutamiento (Routing Tables):
 
-**Creación de Tabla de Enrutamiento (FIB):** Se Crea una tabla de enrutamiento por cada ISP, para utilizarla PBR **(Policy-Based Routing)**, se usa cuando hay múltiples proveedores de Internet (multi-WAN), para de esta manera añadir rutas específicas a cada tabla por separado, usando el comando:
+**3.1) Creación de Tabla de Enrutamiento (FIB):** Se Crea una tabla de enrutamiento por cada ISP, para utilizarla PBR **(Policy-Based Routing)**, se usa cuando hay múltiples proveedores de Internet (multi-WAN), para de esta manera añadir rutas específicas a cada tabla por separado, usando el comando:
 
 ```mikrotik
 /routing table add <parámetros> name=<nombre>
@@ -89,17 +89,23 @@ Para permitir que el tráfico salga por rutas específicas según el proveedor (
 /routing table add disabled=no fib name=usar-starlink
 ```
 
-Colocar la rutas especificas en cada una de las 3 tablas **(usar-cantv,usar-galanet,usar-starlink)**:
+**3.2) Colocar la rutas especificas en cada una de las 3 tablas (usar-cantv,usar-galanet,usar-starlink):**
+
+3.2.1) Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.100.1)** que es gateway (next-hop) CANTV:
 
 ```text
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=192.168.100.1 routing-table=usar-cantv scope=30 target-scope=10
 ```
+3.2.2) Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(172.19.24.101)** que es gateway (next-hop) GALANET:
+
 ```text
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=172.19.24.101 routing-table=usar-galanet scope=30 target-scope=10
 ```
+3.2.3) Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.2.1)** que es gateway (next-hop) STARLINK:
 ```text
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=192.168.2.1 routing-table=usar-starlink scope=30 target-scope=10
 ```
+
 ```text
 /ip route add disabled=yes dst-address=1.1.1.1 gateway=192.168.100.1 routing-table=usar-cantv
 ```
