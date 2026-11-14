@@ -7,7 +7,7 @@ Configuración de enrutamiento y respaldo automático implementada en un router 
 
 ---
 
-## Paso 1. Interfaces de Red (Puertos físicos):
+## Paso 1. Interfaces de Red (Puertos físicos) darle nombre a las interfaces:
 
 El equipo mapea sus puertos físicos a nombres lógicos identificables para las distintas proveedoras y la red local:
 * **`CANTV`** (ether1): Enlace WAN principal.
@@ -16,11 +16,9 @@ El equipo mapea sus puertos físicos a nombres lógicos identificables para las 
 * **`ISP`** (ether4): Interfaz de respaldo adicional (actualmente inactiva / *not active*).
 * **`LAN`** (ether5): Interfaz de red local (Switch/Bridge local).
 
-Renombrar interfaces fisicas:
-
-Informacion del comando: Ese comando en MikroTik se utiliza para cambiar el nombre de una interfaz Ethernet de forma rápida y automatizada mediante la terminal (CLI).
-
 ## Comando para Renombrar Interfaces en RouterOS (CLI)
+
+**Renombrar interfaces fisicas:** El siguiente comando en MikroTik cambia el nombre de una interfaz.
 
 ```mikrotik
 /interface ethernet set [ find default-name=<nombre_interfaz> ] name=<nuevo_nombre>
