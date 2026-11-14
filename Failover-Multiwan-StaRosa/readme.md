@@ -149,10 +149,10 @@ Ese comando crea una ruta estática específica para monitoreo dentro de la tabl
 ```
 ---
 
-## P5. Firewall: Mangle y NAT
+## Paso 6: Firewall: Mangle y NAT:
 
 * **Mangle (Marcado de Rutas)**:
-  * Posee una regla principal en la cadena `prerouting` que captura todo el tráfico proveniente de la red local (`192.168.1.0/24`) dirigido hacia internet (`dst-address=!192.168.1.0/24`) y le asigna la marca de enrutamiento **`usar-cantv`**. Esto define que CANTV sea la vía predeterminada de salida.
+* Posee una regla principal en la cadena `prerouting` que captura todo el tráfico proveniente de la red local (`192.168.1.0/24`) dirigido hacia internet (`dst-address=!192.168.1.0/24`) y le asigna la marca de enrutamiento **`usar-cantv`**. Esto define que CANTV sea la vía predeterminada de salida.
 
 
 ```text
