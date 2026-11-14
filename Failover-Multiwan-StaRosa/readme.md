@@ -97,17 +97,17 @@ En este punto se crearan rutas default apuntando al next hop de cada fib, es dec
 **usar-galanet** -> 172.19.24.101
 **usar-starlink** -> 192.168.2.1
 
-3.2.1) Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.100.1)** que es gateway (next-hop) CANTV:
+3.2.1) Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.100.1)** que es gateway (next-hop) CANTV, en el fib **usar-cantv**:
 
 ```text
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=192.168.100.1 routing-table=usar-cantv scope=30 target-scope=10
 ```
-3.2.2) Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(172.19.24.101)** que es gateway (next-hop) GALANET:
+3.2.2) Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(172.19.24.101)** que es gateway (next-hop) GALANET, en el fib **usar-galanet**:
 
 ```text
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=172.19.24.101 routing-table=usar-galanet scope=30 target-scope=10
 ```
-3.2.3) Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.2.1)** que es gateway (next-hop) STARLINK:
+3.2.3) Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.2.1)** que es gateway (next-hop) STARLINK, en el fib **usar-starlink**:
 ```text
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=192.168.2.1 routing-table=usar-starlink scope=30 target-scope=10
 ```
