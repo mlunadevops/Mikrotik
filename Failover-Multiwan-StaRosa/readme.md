@@ -154,7 +154,7 @@ Ese comando crea una ruta estática específica para monitoreo dentro de la tabl
 * **Mangle (Marcado de Rutas)**:
 * Posee una regla principal en la cadena `prerouting` que captura todo el tráfico proveniente de la red local (`192.168.1.0/24`) dirigido hacia internet (`dst-address=!192.168.1.0/24`) y le asigna la marca de enrutamiento **`usar-cantv`**. Esto define que CANTV sea la vía predeterminada de salida.
 
-## Desglose de Parámetros en Reglas Mangle (RouterOS)
+**Desglose de Parámetros en Reglas Mangle (RouterOS)**
 
 * **`chain=prerouting`**
   * Procesa los paquetes antes de que el router decida por dónde enrutarlos.
@@ -172,6 +172,7 @@ Ese comando crea una ruta estática específica para monitoreo dentro de la tabl
 * **`passthrough=no`**
   * Cuando la regla coincide, deja de evaluar otras reglas Mangle posteriores.
 
+**6.1) Configuracion del mangle
 
 ```text
 /ip firewall mangle add action=mark-routing chain=prerouting comment="Ruta por defecto hacia CANTV" dst-address=!192.168.1.0/24 new-routing-mark=usar-cantv passthrough=no src-address=192.168.1.0/24
@@ -187,12 +188,12 @@ new-routing-mark=usar-cantv \
 passthrough=no \
 src-address=192.168.1.0/24
 ```
-
 ---
 
-## 6. Automatización y Monitoreo (Netwatch y Scripts)
+## PASO 7. Automatización y Monitoreo (Netwatch y Scripts):
 
 * **Herramienta Netwatch**:
+  
   * Monitorea de forma continua al host `1.1.1.1` cada `10s` (con 3 paquetes de sondeo y timeout de 3s).
   * Al haber pérdida de paquetes, ejecuta automáticamente la acción de caída llamando a `/system script run cantv_down`.
 
