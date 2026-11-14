@@ -20,6 +20,12 @@ Renombrar interfaces fisicas:
 
 Informacion del comando:
 
+## Comando para Renombrar Interfaces en RouterOS (CLI)
+
+```mikrotik
+/interface ethernet set [ find default-name=<nombre_interfaz> ] name=<nuevo_nombre>
+```
+
 ## Desglose del Comando de Interfaz Ethernet
 
 1. `/interface ethernet` $\rightarrow$ Entra al menú de interfaces Ethernet.
