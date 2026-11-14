@@ -93,7 +93,7 @@ Para permitir que el tráfico salga por rutas específicas según el proveedor (
 
 **3.2) Colocar la rutas especificas en cada una de las 3 tablas (usar-cantv,usar-galanet,usar-starlink):**
 
-En este punto se crearan rutas default apuntando al next hop de cada fib, es decir, cada tabla de enrutamiento de cada ISP tendra su ruta default, es decir, la fib de CANTV (**usar-cantv**) tiene solo su ruta default de CANTV, la fib de CANTV (**usar-galanet** ) tiene solo su ruta default de GALANET, la fib de STARLINK (**usar-starlink**) tiene solo su ruta default de STARLINK.
+En este punto se crearan rutas default apuntando al next hop de cada ISP (proximo salto), es decir, cada tabla de enrutamiento de la interface conectada a cada ISP tendra su ruta default hacia su ISP es decir, la fib de CANTV (**usar-cantv**) tiene solo su ruta default de CANTV, la fib de CANTV (**usar-galanet** ) tiene solo su ruta default de GALANET, la fib de STARLINK (**usar-starlink**) tiene solo su ruta default de STARLINK.
 
 **usar-cantv**   -> 192.168.100.1
 
