@@ -234,6 +234,21 @@ src-address=192.168.1.0/24
     \n}"
  ```
 
+## Lo más interesante de tu configuración: El Selector Dinámico de Salida
+
+La regla tiene el comentario `"Ruta por defecto hacia CANTV"`, y el script `cantv_down` busca precisamente esa regla para modificar su marca de enrutamiento dinámicamente.
+
+¿Qué sucede cuando CANTV falla?
+
+El sistema ejecuta cambios en caliente sobre la regla Mangle mediante comandos como:
+
+```mikrotik
+/ip firewall mangle set $mangleId new-routing-mark=usar-galanet
+```
+
+
+
+
 ---
 
 ## 7. Ajustes de Sistema
