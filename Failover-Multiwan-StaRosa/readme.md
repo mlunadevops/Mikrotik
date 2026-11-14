@@ -138,11 +138,6 @@ Ese comando crea una ruta estática específica para monitoreo dentro de la tabl
 ```
 ---
 
-## 4. Enrutamiento y Puertas de Enlace (Gateways):
-
-
----
-
 ## 5. Firewall: Mangle y NAT
 
 * **Mangle (Marcado de Rutas)**:
