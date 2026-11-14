@@ -246,7 +246,17 @@ El sistema ejecuta cambios en caliente sobre la regla Mangle mediante comandos c
 /ip firewall mangle set $mangleId new-routing-mark=usar-galanet
 ```
 
+Si la segunda línea de respaldo (`GALANET`) también presenta fallas, el script automatizado procede a conmutar la regla principal de enrutamiento hacia la tercera interfaz disponible mediante el siguiente comando:
 
+```mikrotik
+/ip firewall mangle set $mangleId new-routing-mark=usar-starlink
+```
+
+**Conclusión del Selector Principal de Salida a Internet:**
+
+Esto significa que **el diseño no altera de forma caótica las rutas globales**, sino que modifica de manera limpia y centralizada la marca en la regla Mangle principal para que todo el tráfico que originalmente salía por `CANTV` sea redirigido de forma transparente hacia `GALANET` o `STARLINK` según la disponibilidad real de cada servicio.
+
+En resumen: esta arquitectura aprovecha la flexibilidad de MikroTik RouterOS v7 para crear un **selector principal de salida a internet inteligente y tolerante a fallos**. La red opera de forma totalmente autónoma, garantizando la continuidad operativa de la LAN mediante la monitorización activa y la actualización dinámica de las marcas de enrutamiento (*routing marks*).
 
 
 ---
