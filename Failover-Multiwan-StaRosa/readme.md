@@ -148,6 +148,16 @@ Ese comando crea una ruta estática específica para monitoreo dentro de la tabl
 /ip firewall mangle add action=mark-routing chain=prerouting comment="Ruta por defecto hacia CANTV" dst-address=!192.168.1.0/24 new-routing-mark=usar-cantv passthrough=no src-address=192.168.1.0/24
 ```
 
+```text
+/ip firewall mangle add \
+action=mark-routing \
+chain=prerouting \
+comment="Ruta por defecto hacia CANTV" \
+dst-address=!192.168.1.0/24 \
+new-routing-mark=usar-cantv \
+passthrough=no \
+src-address=192.168.1.0/24
+```
  
 
 * **NAT (Masquerade)**:
