@@ -69,7 +69,7 @@ Configura las interfaces WAN para recibir su configuracion DHCP (CANTV tiene **a
 ```
 ---
 
-## 3. Tablas de Enrutamiento (Routing Tables):
+## 3. Crear Tablas de Enrutamiento (Routing Tables) e inyeccion de rutas default por separado:
 
 **3.1) Creación de Tabla de Enrutamiento (FIB):** Se Crea una tabla de enrutamiento por cada ISP, para utilizarla PBR **(Policy-Based Routing)**, se usa cuando hay múltiples proveedores de Internet (multi-WAN), para de esta manera añadir rutas específicas a cada tabla por separado, usando el comando:
 
