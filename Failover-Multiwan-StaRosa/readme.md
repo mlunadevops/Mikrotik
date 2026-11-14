@@ -71,6 +71,12 @@ Configura las interfaces WAN para recibir su configuracion DHCP (CANTV tiene **a
 
 ## 3. Tablas de Enrutamiento (Routing Tables):
 
+**Creación de Tabla de Enrutamiento Personalizada en MikroTik RouterOS v7:** Crea una tabla de enrutamiento personalizada en RouterOS y utilizarla en políticas de enrutamiento **(Policy-Based Routing)**, se utiliza en configuraciones de Policy Based Routing (PBR) o cuando hay múltiples proveedores de Internet (multi-WAN), para añadir rutas específicas a cada tabla por separado, como en este caso. comando:
+
+```mikrotik
+/routing table add <parámetros> name=<nombre>
+```
+
 Para permitir que el tráfico salga por rutas específicas según el proveedor, se definieron tres (3) **tablas de enrutamiento basadas en políticas (FIB)**:
 
 1. **`usar-cantv`**: Tabla de enrutamiento (fib) dedicada al tráfico que sale por CANTV.
