@@ -69,9 +69,20 @@ Configura las interfaces WAN para recibir su configuracion DHCP (CANTV tiene **a
 ```
 ---
 
-## 3. Crear Tablas de Enrutamiento (Routing Tables) e inyeccion de rutas default por separado:
+## Paso 4:NAT (Masquerade):
 
-**3.1) Creación de Tabla de Enrutamiento (FIB):** Se Crea una tabla de enrutamiento por cada ISP, para utilizarla PBR **(Policy-Based Routing)**, se usa cuando hay múltiples proveedores de Internet (multi-WAN), para de esta manera añadir rutas específicas a cada tabla por separado, usando el comando:
+Contiene reglas de enmascaramiento independientes para traducir las IPs privadas de la LAN hacia las tres interfaces WAN **(`CANTV`, `GALANET`, y `STARLINK`)**, garantizando que cualquier interfaz activa pueda enrutar el tráfico si se le asigna la marca correcta.
+
+ ```text
+/ip firewall nat add action=masquerade chain=srcnat comment="NAT CANTV" out-interface=CANTV
+/ip firewall nat add action=masquerade chain=srcnat comment="NAT GALANET" out-interface=GALANET
+/ip firewall nat add action=masquerade chain=srcnat comment="NAT STARLINK" out-interface=STARLINK
+```
+
+
+## Paso 5: Crear Tablas de Enrutamiento (Routing Tables) e inyeccion de rutas default por separado:
+
+**5.1) Creación de Tabla de Enrutamiento (FIB):** Se Crea una tabla de enrutamiento por cada ISP, para utilizarla PBR **(Policy-Based Routing)**, se usa cuando hay múltiples proveedores de Internet (multi-WAN), para de esta manera añadir rutas específicas a cada tabla por separado, usando el comando:
 
 ```mikrotik
 /routing table add <parámetros> name=<nombre>
@@ -91,7 +102,7 @@ Para permitir que el tráfico salga por rutas específicas según el proveedor (
 /routing table add disabled=no fib name=usar-starlink
 ```
 
-**3.2) Colocar la rutas especificas en cada una de las 3 tablas (usar-cantv,usar-galanet,usar-starlink):**
+**5.2) Colocar la rutas especificas en cada una de las 3 tablas (usar-cantv,usar-galanet,usar-starlink):**
 
 En este punto se crearan rutas default apuntando al next hop de cada ISP (proximo salto), es decir, cada tabla de enrutamiento de la interface conectada a cada ISP tendra su ruta default hacia su ISP es decir, la fib de CANTV (**usar-cantv**) tiene solo su ruta default de CANTV, la fib de CANTV (**usar-galanet** ) tiene solo su ruta default de GALANET, la fib de STARLINK (**usar-starlink**) tiene solo su ruta default de STARLINK.
 
@@ -108,22 +119,22 @@ Las rutas estáticas por defecto (`0.0.0.0/0`) para cada proveedor están asocia
 
 **usar-starlink** -> 192.168.2.1
 
-**3.2.1)** Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.100.1)** que es gateway (next-hop) CANTV, en el fib **usar-cantv**:
+**5.2.1)** Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.100.1)** que es gateway (next-hop) CANTV, en el fib **usar-cantv**:
 
 ```text
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=192.168.100.1 routing-table=usar-cantv scope=30 target-scope=10
 ```
-**3.2.2)** Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(172.19.24.101)** que es gateway (next-hop) GALANET, en el fib **usar-galanet**:
+**5.2.2)** Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(172.19.24.101)** que es gateway (next-hop) GALANET, en el fib **usar-galanet**:
 
 ```text
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=172.19.24.101 routing-table=usar-galanet scope=30 target-scope=10
 ```
-**3.2.3)** Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.2.1)** que es gateway (next-hop) STARLINK, en el fib **usar-starlink**:
+**5.2.3)** Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.2.1)** que es gateway (next-hop) STARLINK, en el fib **usar-starlink**:
 ```text
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=192.168.2.1 routing-table=usar-starlink scope=30 target-scope=10
 ```
 
-**3.2.3)** Ruta Estática Específica para Monitoreo **(`usar-cantv`)**
+**5.2.4)** Ruta Estática Específica para Monitoreo **(`usar-cantv`)**
 
 Ese comando crea una ruta estática específica para monitoreo dentro de la tabla de enrutamiento de CANTV (`usar-cantv`), pero con una particularidad clave: está deshabilitada (`disabled=yes`).
 
@@ -138,7 +149,7 @@ Ese comando crea una ruta estática específica para monitoreo dentro de la tabl
 ```
 ---
 
-## 5. Firewall: Mangle y NAT
+## P5. Firewall: Mangle y NAT
 
 * **Mangle (Marcado de Rutas)**:
   * Posee una regla principal en la cadena `prerouting` que captura todo el tráfico proveniente de la red local (`192.168.1.0/24`) dirigido hacia internet (`dst-address=!192.168.1.0/24`) y le asigna la marca de enrutamiento **`usar-cantv`**. Esto define que CANTV sea la vía predeterminada de salida.
@@ -159,16 +170,6 @@ passthrough=no \
 src-address=192.168.1.0/24
 ```
  
-
-* **NAT (Masquerade)**:
-
-* Contiene reglas de enmascaramiento independientes para traducir las IPs privadas de la LAN hacia las tres interfaces WAN (`CANTV`, `GALANET`, y `STARLINK`), garantizando que cualquier interfaz activa pueda enrutar el tráfico si se le asigna la marca correcta.
-
- ```text
-/ip firewall nat add action=masquerade chain=srcnat comment="NAT CANTV" out-interface=CANTV
-/ip firewall nat add action=masquerade chain=srcnat comment="NAT GALANET" out-interface=GALANET
-/ip firewall nat add action=masquerade chain=srcnat comment="NAT STARLINK" out-interface=STARLINK
-```
 
 ---
 
