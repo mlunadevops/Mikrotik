@@ -79,9 +79,11 @@ Configura las interfaces WAN para recibir su configuracion DHCP (CANTV tiene **a
 
 Para permitir que el tráfico salga por rutas específicas según el proveedor (ISP), se definieron tres (3) **tablas de enrutamiento basadas en políticas (FIB)**:
 
-1. **`usar-cantv`**: Tabla de enrutamiento (fib) dedicada al tráfico que sale por CANTV.
-2. **`usar-galanet`**: Tabla de enrutamiento (fib) dedicada al tráfico que sale por GALANET.
-3. **`usar-starlink`**: Tabla de enrutamiento (fib) dedicada al tráfico que sale por STARLINK.
+**Tablas de Enrutamiento Personalizadas (FIB):**
+
+1. **`usar-cantv`**: Tabla de enrutamiento (`fib`) dedicada al tráfico que sale por CANTV.
+2. **`usar-galanet`**: Tabla de enrutamiento (`fib`) dedicada al tráfico que sale por GALANET.
+3. **`usar-starlink`**: Tabla de enrutamiento (`fib`) dedicada al tráfico que sale por STARLINK.
 
 ```text
 /routing table add fib name=usar-cantv
