@@ -95,6 +95,13 @@ Para permitir que el tráfico salga por rutas específicas según el proveedor (
 
 En este punto se crearan rutas default apuntando al next hop de cada ISP (proximo salto), es decir, cada tabla de enrutamiento de la interface conectada a cada ISP tendra su ruta default hacia su ISP es decir, la fib de CANTV (**usar-cantv**) tiene solo su ruta default de CANTV, la fib de CANTV (**usar-galanet** ) tiene solo su ruta default de GALANET, la fib de STARLINK (**usar-starlink**) tiene solo su ruta default de STARLINK.
 
+Las rutas estáticas por defecto (`0.0.0.0/0`) para cada proveedor están asociadas a sus respectivas tablas y saltos (gateways):
+* **CANTV**: Gateway a ISP `192.168.100.1` asociado a la tabla `usar-cantv`.
+* **GALANET**: Gateway a ISP `172.19.24.101` asociado a la tabla `usar-galanet`.
+* **STARLINK**: Gateway a ISP`192.168.2.1` asociado a la tabla `usar-starlink`.
+* **Monitoreo de red**: Existe una ruta estática hacia `1.1.1.1` apuntando a `192.168.100.1` bajo la tabla **`usar-cantv`** (actualmente deshabilitada `disabled=yes).
+
+
 **usar-cantv**   -> 192.168.100.1
 
 **usar-galanet** -> 172.19.24.101
@@ -133,11 +140,6 @@ Ese comando crea una ruta estática específica para monitoreo dentro de la tabl
 
 ## 4. Enrutamiento y Puertas de Enlace (Gateways):
 
-Las rutas estáticas por defecto (`0.0.0.0/0`) para cada proveedor están asociadas a sus respectivas tablas y saltos (gateways):
-* **CANTV**: Gateway a ISP `192.168.100.1` asociado a la tabla `usar-cantv`.
-* **GALANET**: Gateway a ISP `172.19.24.101` asociado a la tabla `usar-galanet`.
-* **STARLINK**: Gateway a ISP`192.168.2.1` asociado a la tabla `usar-starlink`.
-* **Monitoreo de red**: Existe una ruta estática hacia `1.1.1.1` apuntando a `192.168.100.1` bajo la tabla **`usar-cantv`** (actualmente deshabilitada `disabled=yes).
 
 ---
 
