@@ -26,7 +26,7 @@ Informacion del comando:
 /interface ethernet set [ find default-name=<nombre_interfaz> ] name=<nuevo_nombre>
 ```
 
-## Desglose del Comando de Interfaz Ethernet
+**Desglose del Comando de Interfaz Ethernet:**
 
 1. `/interface ethernet` $\rightarrow$ Entra al menú de interfaces Ethernet.
 2. `find default-name=ether1` $\rightarrow$ Busca la interfaz cuyo nombre por defecto es `ether1`.
