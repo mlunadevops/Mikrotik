@@ -20,12 +20,10 @@ Renombrar interfaces fisicas:
 
 Informacion del comando:
 
-/interface ethernet → entra al menú de interfaces Ethernet.
-find default-name=ether1 → busca la interfaz cuyo nombre por defecto es ether1.
-
-set → modifica los parámetros de la interfaz encontrada.
-
-name=CANTV → le asigna el nuevo nombre CANTV.
+**/interface ethernet** → entra al menú de interfaces Ethernet.
+**find default-name=ether1 →** busca la interfaz cuyo nombre por defecto es ether1.
+**set →**  modifica los parámetros de la interfaz encontrada.
+**name=CANTV →** le asigna el nuevo nombre CANTV.
 
 
 
