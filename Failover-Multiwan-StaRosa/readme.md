@@ -18,6 +18,17 @@ El equipo mapea sus puertos físicos a nombres lógicos identificables para las 
 
 Renombrar interfaces fisicas:
 
+Informacion del comando:
+
+/interface ethernet → entra al menú de interfaces Ethernet.
+find default-name=ether1 → busca la interfaz cuyo nombre por defecto es ether1.
+
+set → modifica los parámetros de la interfaz encontrada.
+
+name=CANTV → le asigna el nuevo nombre CANTV.
+
+
+
 ```text
 /interface ethernet set [ find default-name=ether1 ] name=CANTV
 /interface ethernet set [ find default-name=ether2 ] name=GALANET
