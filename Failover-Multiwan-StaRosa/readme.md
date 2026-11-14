@@ -101,20 +101,30 @@ En este punto se crearan rutas default apuntando al next hop de cada ISP (proxim
 
 **usar-starlink** -> 192.168.2.1
 
-3.2.1) Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.100.1)** que es gateway (next-hop) CANTV, en el fib **usar-cantv**:
+**3.2.1)** Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.100.1)** que es gateway (next-hop) CANTV, en el fib **usar-cantv**:
 
 ```text
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=192.168.100.1 routing-table=usar-cantv scope=30 target-scope=10
 ```
-3.2.2) Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(172.19.24.101)** que es gateway (next-hop) GALANET, en el fib **usar-galanet**:
+**3.2.2)** Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(172.19.24.101)** que es gateway (next-hop) GALANET, en el fib **usar-galanet**:
 
 ```text
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=172.19.24.101 routing-table=usar-galanet scope=30 target-scope=10
 ```
-3.2.3) Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.2.1)** que es gateway (next-hop) STARLINK, en el fib **usar-starlink**:
+**3.2.3)** Colocar la default route **(0.0.0.0/0)** hacia la ip de cada gateway, en este caso la IP **(192.168.2.1)** que es gateway (next-hop) STARLINK, en el fib **usar-starlink**:
 ```text
 /ip route add disabled=no distance=1 dst-address=0.0.0.0/0 gateway=192.168.2.1 routing-table=usar-starlink scope=30 target-scope=10
 ```
+
+**3.2.3)** Ruta Estática Específica para Monitoreo **(`usar-cantv`)**
+
+Ese comando crea una ruta estática específica para monitoreo dentro de la tabla de enrutamiento de CANTV (`usar-cantv`), pero con una particularidad clave: está deshabilitada (`disabled=yes`).
+
+**¿Para qué sirve conceptualmente?**
+
+1. **Forzar el destino:** Le indica al router que, si en algún momento necesita comunicarse con la dirección IP `1.1.1.1` (que pertenece a los servidores DNS públicos de Cloudflare), debe enviar obligatoriamente ese tráfico a través de la pasarela (*gateway*) de CANTV (`192.168.100.1`).
+2. **Aislar el monitoreo:** En configuraciones de múltiples proveedores (Multi-WAN), se usa para asegurar que las herramientas de sondeo (como Netwatch o Ping) comprueben la salud real de CANTV usando su propia ruta y no se desvíen por error a través de Galanet o Starlink.
+
 
 ```text
 /ip route add disabled=yes dst-address=1.1.1.1 gateway=192.168.100.1 routing-table=usar-cantv
