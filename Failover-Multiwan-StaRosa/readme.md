@@ -18,7 +18,7 @@ El equipo mapea sus puertos físicos a nombres lógicos identificables para las 
 
 Renombrar interfaces fisicas:
 
-Informacion del comando:
+Informacion del comando: Ese comando en MikroTik se utiliza para cambiar el nombre de una interfaz Ethernet de forma rápida y automatizada mediante la terminal (CLI).
 
 ## Comando para Renombrar Interfaces en RouterOS (CLI)
 
